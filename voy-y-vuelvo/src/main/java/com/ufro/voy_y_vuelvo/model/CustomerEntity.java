@@ -17,4 +17,6 @@ public class CustomerEntity {
     private String name;
     private String email;
     private int points;
+    private boolean emailVerified;
+    private String emailVerificationCode;
 }
