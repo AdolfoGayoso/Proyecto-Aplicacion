@@ -2,8 +2,8 @@ package com.ufro.voy_y_vuelvo.dto;
 
 public enum AuthenticationResponseMessages {
     RUT_EMAIL_ALREADY_EXISTS("Rut o email ya se encuentra registrado"),
-    REGISTER_SUCCESSFUL("Nuevo usuario registrado con exito"),
-    VERIFICATION_EMAIL_SENT("Se ha enviado un email de verificación"),;
+    VERIFICATION_EMAIL_SENT("Se ha enviado un email de verificación"),
+    FAIL_TO_SEND_VERIFICATION_EMAIL("No se ha podido enviar el mail de verificacion"),;
 
     private final String message;
 

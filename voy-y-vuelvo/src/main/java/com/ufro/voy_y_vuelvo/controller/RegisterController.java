@@ -16,7 +16,7 @@ public class RegisterController {
         this.registerService = registerService;
     }
 
-    @PostMapping("/user/register")
+    @PostMapping("/register")
     public ResponseEntity<AuthenticationResponseDTO> registerUser(@RequestBody RegisterRequestDTO registerRequestDTO) {
         AuthenticationResponseDTO authenticationResponseDTO = registerService.registerCustomer(registerRequestDTO);
         return ResponseEntity.status(authenticationResponseDTO.isSuccess() ? 201 : 400).body(authenticationResponseDTO);
