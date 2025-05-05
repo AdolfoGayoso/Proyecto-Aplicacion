@@ -4,9 +4,13 @@ import com.ufro.voy_y_vuelvo.model.CustomerEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface CustomerEntityRepository extends JpaRepository<CustomerEntity, Long> {
-    boolean existsByEmail(String email);
-
-    boolean existsByRut(String rut);
+    Optional<CustomerEntity> findByRut(String rut);
+    Optional<CustomerEntity> findByEmail(String email);
+    Optional<CustomerEntity> findByEmailVerificationCode(String verificationCode);
+    boolean existsByRutAndEmailVerifiedTrue(String rut);
+    boolean existsByEmailAndEmailVerifiedTrue(String email);
 }

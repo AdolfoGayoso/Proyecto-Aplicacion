@@ -9,22 +9,14 @@ import lombok.Setter;
 @Getter
 @Setter
 public class CustomerEntity {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(unique = true)
-
     private String rut;
-
     private String password;
-
     private String name;
-
     private String email;
-
     private int points;
-
-
+    private boolean emailVerified;
+    private String emailVerificationCode;
 }
