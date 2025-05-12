@@ -1,7 +1,7 @@
 package com.ufro.voy_y_vuelvo.model.purchases;
 
 import com.ufro.voy_y_vuelvo.model.trips.Trip;
-import com.ufro.voy_y_vuelvo.model.users.UserCustomer;
+import com.ufro.voy_y_vuelvo.model.users.Customer;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -16,7 +16,7 @@ public class Purchase {
     private Trip trip;
 
     @ManyToOne
-    private UserCustomer user;
+    private Customer user;
 
     private LocalDateTime purchaseDate;
 }

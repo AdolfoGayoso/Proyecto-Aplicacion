@@ -1,6 +1,6 @@
 package com.ufro.voy_y_vuelvo.model.trips;
 
-import com.ufro.voy_y_vuelvo.model.users.UserPublisher;
+import com.ufro.voy_y_vuelvo.model.users.Publisher;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -25,7 +25,7 @@ public class Trip {
 
     @ManyToOne
     @JoinColumn(name = "publisher_id")
-    private UserPublisher publisher;
+    private Publisher publisher;
 
     @OneToMany(mappedBy = "trip", cascade = CascadeType.ALL, orphanRemoval = true)
     @OrderBy("stopOrder ASC")

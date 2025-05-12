@@ -9,20 +9,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@DiscriminatorValue("PUBLISHER")
 @Getter
 @Setter
-public class UserPublisher {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    private final String  userType = UserType.PUBLISHER.toString();
-
-    private String password;
-    private String rut;
-    private String userName;
-    private String email;
+public class Publisher extends User {
 
     @OneToMany(mappedBy = "publisher", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Trip> publishedTrips = new ArrayList<>();
+
 }
