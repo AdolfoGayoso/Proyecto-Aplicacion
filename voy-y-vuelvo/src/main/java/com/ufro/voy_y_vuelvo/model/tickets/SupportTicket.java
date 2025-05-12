@@ -1,6 +1,6 @@
 package com.ufro.voy_y_vuelvo.model.tickets;
 
-import com.ufro.voy_y_vuelvo.model.users.UserCustomer;
+import com.ufro.voy_y_vuelvo.model.users.Customer;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,5 +22,5 @@ public class SupportTicket {
 
     @ManyToOne
     @JoinColumn(name = "user_customer_id")
-    private UserCustomer createdBy;
+    private Customer createdBy;
 }

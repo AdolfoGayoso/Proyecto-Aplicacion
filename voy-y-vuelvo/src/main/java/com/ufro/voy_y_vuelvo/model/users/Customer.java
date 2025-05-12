@@ -10,29 +10,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@DiscriminatorValue("CUSTOMER")
 @Getter
 @Setter
-public class UserCustomer {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Customer extends User {
 
-    private final String  userType = UserType.CUSTOMER.toString();
+    private Integer points = 0;
 
-    private String password;
-    private String rut;
-    private String userName;
-    private String email;
-
-    private int points;
-
-    private boolean emailVerified;
+    private Boolean emailVerified = false;
     private String emailVerificationCode;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Purchase> purchases = new ArrayList<>();
 
-    @OneToMany(mappedBy = "createdBy", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "createdBy", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<SupportTicket> supportTickets = new ArrayList<>();
 
 }
