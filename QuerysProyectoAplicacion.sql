@@ -3,14 +3,31 @@ create database voyyvuelvov2;
 
 use voyyvuelvov2;
 
-SELECT * FROM voyyvuelvov2.customer_entity;
-SELECT * FROM voyyvuelvov2.publisher_entity;
-SELECT * FROM voyyvuelvov2.trip_entity;
-SELECT * FROM voyyvuelvov2.stop_entity;
+SELECT * FROM voyyvuelvov2.stop;
+SELECT * FROM voyyvuelvov2.trip;
 
-insert into stop_entity (id, latitude, longitude, name) values ('1','1','1','testParada1');
-insert into stop_entity (id, latitude, longitude, name) values ('1','1','1','testParada2');
+SELECT * FROM voyyvuelvov2.user_customer;
+SELECT * FROM voyyvuelvov2.user_publisher;
 
-insert into customer_entity (id, email, name, password, points, rut) values ('1','customer1@email.com', 'customer1', 'customer1', '0','11111111-1');
-insert into customer_entity (id, email, name, password, points, rut) values ('2','customer2@email.com', 'customer2', 'customer2', '0','22222222-2');
-insert into customer_entity (id, email, name, password, points, rut) values ('3','customer3@email.com', 'customer3', 'customer3', '0','33333333-3');
+SELECT * FROM voyyvuelvov2.trip;
+SELECT * FROM voyyvuelvov2.trip_stop_order;
+
+SELECT * FROM voyyvuelvov2.trip_stop_order WHERE trip_id = 1;
+
+INSERT INTO stop (latitude, longitude, name) 
+VALUES 
+	('1','1','testParada1'),
+	('2','2','testParada2');
+
+INSERT INTO user_publisher (password, rut, user_name, email) VALUES ('secure123', '12345678-9', 'Transportes Andes', 'contacto@transportesandes.cl');
+
+INSERT INTO trip (publisher_id)
+VALUES (1); 
+
+INSERT INTO trip_stop_order (trip_id, stop_id, stop_order)
+VALUES 
+    (1, 1, 0),  -- Primera parada: testParada1
+    (1, 2, 2);  -- Segunda parada: testParada2
+    
+    
+
