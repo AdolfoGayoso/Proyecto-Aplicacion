@@ -24,7 +24,7 @@ INSERT INTO users (
     email
 ) VALUES (
     'PUBLISHER', 
-    '$2a$10$13qsom4dlatPdRUm06LHd.e614IkbUT4xPnhEj6Hvdq1nLTaZDXGS', 
+    '$2a$10$avYGFvGVuhn1uaek5.AXyOLuCJcRcW2Zcq283HYrqnIUOD0UNwkue', # contraseñapublisher
     '12345678-9', 
     'nombrePublicador', 
     'publicador@example.com'

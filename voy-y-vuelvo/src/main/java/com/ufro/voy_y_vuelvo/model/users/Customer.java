@@ -17,7 +17,7 @@ public class Customer extends User {
 
     private Integer points = 0;
 
-    private Boolean emailVerified = false;
+    private Boolean emailVerified;
     private String emailVerificationCode;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
