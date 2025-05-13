@@ -1,4 +1,4 @@
-package com.ufro.voy_y_vuelvo.dto.authetication;
+package com.ufro.voy_y_vuelvo.dto.authetication.register;
 
 import com.ufro.voy_y_vuelvo.model.users.UserType;
 import lombok.Getter;
