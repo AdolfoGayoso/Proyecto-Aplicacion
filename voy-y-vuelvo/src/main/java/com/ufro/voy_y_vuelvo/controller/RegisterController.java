@@ -1,34 +1,24 @@
 package com.ufro.voy_y_vuelvo.controller;
 
-import com.ufro.voy_y_vuelvo.dto.AuthenticationResponseDTO;
-import com.ufro.voy_y_vuelvo.dto.RegisterRequestDTO;
-import com.ufro.voy_y_vuelvo.service.EmailVerificationService;
+import com.ufro.voy_y_vuelvo.dto.authetication.CustomerRegisterRequest;
 import com.ufro.voy_y_vuelvo.service.RegisterService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/register")
+@RequestMapping("/api/auth")
+@RequiredArgsConstructor
 public class RegisterController {
 
-    private final RegisterService registerService;
-    private final EmailVerificationService emailVerificationService;
+    private final RegisterService authService;
 
-    public RegisterController(RegisterService registerService, EmailVerificationService emailVerificationService) {
-        this.registerService = registerService;
-        this.emailVerificationService = emailVerificationService;
+    @PostMapping("/register/customer")
+    public ResponseEntity<String> registerCustomer(@RequestBody CustomerRegisterRequest request) {
+        authService.registerCustomer(request);
+        return ResponseEntity.ok("Cliente registrado exitosamente");
     }
-
-    @PostMapping()
-    public ResponseEntity<AuthenticationResponseDTO> registerUser(@RequestBody RegisterRequestDTO registerRequestDTO) {
-        AuthenticationResponseDTO authenticationResponseDTO = registerService.registerCustomer(registerRequestDTO);
-        return ResponseEntity.status(authenticationResponseDTO.isSuccess() ? 201 : 400).body(authenticationResponseDTO);
-    }
-
-    @GetMapping("/verify-email")
-    public ResponseEntity<AuthenticationResponseDTO> verifyEmail(@RequestParam String emailVerificationCode) {
-        AuthenticationResponseDTO response = emailVerificationService.verifyEmail(emailVerificationCode);
-        return ResponseEntity.status(response.isSuccess() ? 200 : 400).body(response);
-    }
-
 }
