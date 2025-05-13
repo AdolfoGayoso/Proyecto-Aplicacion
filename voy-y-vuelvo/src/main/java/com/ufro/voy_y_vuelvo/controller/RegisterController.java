@@ -1,24 +1,38 @@
 package com.ufro.voy_y_vuelvo.controller;
 
-import com.ufro.voy_y_vuelvo.dto.authetication.CustomerRegisterRequest;
-import com.ufro.voy_y_vuelvo.service.RegisterService;
+import com.ufro.voy_y_vuelvo.dto.ApiResponse;
+import com.ufro.voy_y_vuelvo.dto.authetication.register.CustomerRegisterRequest;
+import com.ufro.voy_y_vuelvo.service.authentication.EmailVerificationService;
+import com.ufro.voy_y_vuelvo.service.authentication.RegisterService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
 public class RegisterController {
 
-    private final RegisterService authService;
+    private final RegisterService registerService;
+    private final EmailVerificationService emailVerificationService;
+    private final PasswordEncoder passwordEncoder;
 
     @PostMapping("/register/customer")
-    public ResponseEntity<String> registerCustomer(@RequestBody CustomerRegisterRequest request) {
-        authService.registerCustomer(request);
-        return ResponseEntity.ok("Cliente registrado exitosamente");
+    public ResponseEntity<ApiResponse<?>> registerCustomer(@RequestBody CustomerRegisterRequest request) {
+        ApiResponse<?> response = registerService.registerCustomer(request);
+        return ResponseEntity.status(response.getStatus()).body(response);
+    }
+
+    @GetMapping("/register/verify-email")
+    public ResponseEntity<ApiResponse<?>> validateEmail(@RequestParam String emailVerificationCode) {
+        ApiResponse<?> response = emailVerificationService.verifyEmail(emailVerificationCode);
+        return ResponseEntity.status(response.getStatus()).body(response);
+    }
+
+
+    @GetMapping("/hasheador")
+    public String hasheador(@RequestParam String hash) {
+        return passwordEncoder.encode(hash);
     }
 }
