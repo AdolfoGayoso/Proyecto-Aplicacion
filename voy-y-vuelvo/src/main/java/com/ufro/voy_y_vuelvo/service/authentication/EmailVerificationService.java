@@ -41,6 +41,20 @@ public class EmailVerificationService {
         Optional<Customer> customer = customerRepository.findByEmailVerificationCode(emailVerificationCode);
 
         if (customer.isPresent()) {
+
+            if (customer.get().getEmailVerified()) {
+
+                response.setEmailToValidate(customer.get().getEmail());
+                response.setSuccess(Boolean.TRUE);
+                
+                return new ApiResponse<>(
+                        409,
+                        "Email validado con exito.",
+                        response
+                );
+            }
+
+
             Customer customerToValidate = customer.get();
             customerToValidate.setEmailVerified(Boolean.TRUE);
             customerToValidate.setEmailVerificationCode(null);
