@@ -1,17 +1,12 @@
 <template>
   <div id="app">
-    <Buscador />
+    <router-view />
   </div>
 </template>
 
 <script>
-import Buscador from './components/Buscador.vue'
-
 export default {
-  name: 'App',
-  components: {
-    Buscador
-  }
+  name: 'App'
 }
 </script>
 

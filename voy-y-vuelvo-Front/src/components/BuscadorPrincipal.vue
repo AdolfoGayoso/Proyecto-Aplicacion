@@ -34,8 +34,8 @@
     </div>
 
     <div class="bottom-icons">
-      <button>👤</button>
-      <button>❓</button>
+  <button @click="$router.push('/login')">👤</button>
+  <button>❓</button>
     </div>
   </div>
 </template>
