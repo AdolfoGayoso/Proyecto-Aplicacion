@@ -11,5 +11,5 @@ import java.util.Optional;
 
 @Repository
 public interface StopRepository extends JpaRepository<Stop, Long> {
-    Optional<Stop> findStopByName(String name);
+    Optional<Stop> findStopByNameIgnoreCase(String name);
 }

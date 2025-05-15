@@ -1,6 +1,5 @@
 package com.ufro.voy_y_vuelvo.service;
 
-import com.ufro.voy_y_vuelvo.dto.ApiResponse;
 import com.ufro.voy_y_vuelvo.dto.StopDto;
 import com.ufro.voy_y_vuelvo.model.trips.Stop;
 import com.ufro.voy_y_vuelvo.repository.StopRepository;
@@ -8,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -23,11 +22,9 @@ public class StopService {
                 .toList();
     }
 
-    public StopDto findByName(String name) {
-
-        StopDto  stopDto =
-
-
+    public Optional<StopDto> findByName(String name) {
+        return stopRepository.findStopByNameIgnoreCase(name)
+                .map(this::toDto);
     }
 
     public StopDto toDto(Stop stop) {
