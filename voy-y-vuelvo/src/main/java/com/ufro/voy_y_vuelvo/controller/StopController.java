@@ -8,9 +8,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/stop")
@@ -22,5 +24,14 @@ public class StopController {
     public ResponseEntity<ApiResponse<?>> getAllStops() {
         ApiResponse<?> response = new ApiResponse<>(HttpStatus.OK.value(), "Paradas obtenidas con exito.", stopService.getAllStops());
         return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+    @GetMapping("/get-stop-by-name")
+    public ResponseEntity<ApiResponse<?>> getStopByName(@RequestParam String name) {
+        ApiResponse<?> response = new ApiResponse<>();
+        Optional<StopDto> stopDto = stopService.findByName(name);
+
+
+
     }
 }
