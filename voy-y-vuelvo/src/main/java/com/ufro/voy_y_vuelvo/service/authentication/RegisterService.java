@@ -89,7 +89,7 @@ public class RegisterService {
         userRepository.save(customer);
 
         try {
-            emailVerificationService.sendVerificationEmail(customer.getEmail(), emailVerificationCode);
+//            emailVerificationService.sendVerificationEmail(customer.getEmail(), emailVerificationCode);
 
             customerRegisterResponse.setSuccess(Boolean.TRUE);
             customerRegisterResponse.setUserType(UserType.CUSTOMER.getUserType());
