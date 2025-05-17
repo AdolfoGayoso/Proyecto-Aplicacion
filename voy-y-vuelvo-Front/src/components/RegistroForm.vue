@@ -3,17 +3,20 @@
     <div class="registro-card">
       <h2>Registro</h2>
 
-      <label for="email">Correo electronico</label>
-      <input type="email" id="email" />
+      <label for="rut">RUT</label>
+      <input type="text" id="rut" v-model="rut" />
+
+      <label for="email">Correo electrónico</label>
+      <input type="email" id="email" v-model="email" />
+
+      <label for="userName">Nombre de usuario</label>
+      <input type="text" id="userName" v-model="userName" />
 
       <label for="password">Contraseña</label>
-      <input type="password" id="password" />
+      <input type="password" id="password" v-model="password" />
 
       <label for="confirmPassword">Confirmar contraseña</label>
-      <input type="password" id="confirmPassword" />
-
-      <label for="phone">Teléfono</label>
-      <input type="text" id="phone" />
+      <input type="password" id="confirmPassword" v-model="confirmPassword" />
 
       <button @click="registrarse">Registrarse</button>
     </div>
@@ -23,11 +26,51 @@
 <script>
 export default {
   name: 'RegistroForm',
+  data() {
+    return {
+      rut: '',
+      email: '',
+      userName: '',
+      password: '',
+      confirmPassword: ''
+    };
+  },
   methods: {
-    registrarse() {
-      // Aquí iría la lógica real para enviar los datos al backend.
-      // Por ahora simplemente redirige.
-      this.$router.push('/perfil');
+    async registrarse() {
+      if (this.password !== this.confirmPassword) {
+        alert("Las contraseñas no coinciden");
+        return;
+      }
+
+      const requestBody = {
+        rut: this.rut,
+        email: this.email,
+        userName: this.userName,
+        password: this.password
+      };
+
+      try {
+        const response = await fetch('http://localhost:8080/api/auth/register/customer', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(requestBody)
+        });
+
+        const data = await response.json();
+        console.log("Respuesta del backend:", data);
+
+        if (response.ok) {
+          alert("¡Registro exitoso!");
+          this.$router.push('/perfil');
+        } else {
+          alert("Error en el registro: " + (data.message || "Error desconocido"));
+        }
+      } catch (error) {
+        console.error("Error al registrar:", error);
+        alert("Ocurrió un error en el registro.");
+      }
     }
   }
 }
