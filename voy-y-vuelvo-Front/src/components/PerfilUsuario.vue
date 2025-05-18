@@ -6,7 +6,7 @@
       <p class="bienvenida">Bienvenid@ {{ user.userName || '' }}!</p>
       <div class="datos-usuario" v-if="user">
         <h2>Datos del Usuario</h2>
-        <p>Nombre: {{ user.userName || 'Nombre no disponible' }}</p>
+        <p>Nombre: {{ user?.userName || 'Nombre no disponible' }}</p>
         <p>RUT: {{ user.rut || 'Sin RUT' }}</p>
         <p>{{ user.email }}</p>
       </div>

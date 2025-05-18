@@ -63,7 +63,7 @@ export default {
 
         if (response.ok) {
           alert("¡Registro exitoso!");
-          this.$router.push('/perfil');
+          this.$router.push('/login');
         } else {
           alert("Error en el registro: " + (data.message || "Error desconocido"));
         }
