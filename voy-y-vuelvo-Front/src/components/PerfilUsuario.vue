@@ -3,12 +3,12 @@
     <button class="cerrar-btn" @click="cerrarSesion">Cerrar sesión</button>
 
     <div class="perfil-box">
-      <p class="bienvenida">Bienvenid@!</p>
-      <div class="datos-usuario">
-        <h2>Nombre Usuario</h2>
-        <p>RUT: 12.345.678-9</p>
-        <p>correo@gmail.com</p>
-        <p>+569 12345678</p>
+      <p class="bienvenida">Bienvenid@ {{ user.userName || '' }}!</p>
+      <div class="datos-usuario" v-if="user">
+        <h2>Datos del Usuario</h2>
+        <p>Nombre: {{ user.userName || 'Nombre no disponible' }}</p>
+        <p>RUT: {{ user.rut || 'Sin RUT' }}</p>
+        <p>{{ user.email }}</p>
       </div>
       <div class="resumen">
         <h3>Resumen</h3>
@@ -41,10 +41,41 @@
 <script>
 export default {
   name: 'PerfilUsuario',
+  data() {
+    return {
+      user: null
+    };
+  },
+  created() {
+    this.obtenerDatosUsuario();
+  },
   methods: {
+    async obtenerDatosUsuario() {
+      const token = localStorage.getItem('token');
+       if (!token) {
+        alert('No hay sesión activa.');
+        this.$router.push('/login');
+        return;
+      }
+       try {
+        const response = await fetch('http://localhost:8080/api/auth/user-info',{
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        if (!response.ok) {
+          throw new Error('Error al obtener los datos del usuario');
+        }
+         const data = await response.json();
+         this.user = data;
+         console.log('Datos del usuario:', this.user);
+      } catch (error) {
+        console.error('Error al obtener los datos del usuario:', error)
+      }
+  },
     cerrarSesion() {
-      // Aquí podrías limpiar datos de sesión si los tuvieras
-      this.$router.push('/login'); // Redirige al login
+      localStorage.removeItem('token');
+      this.$router.push('/login');
     }
   }
 }
