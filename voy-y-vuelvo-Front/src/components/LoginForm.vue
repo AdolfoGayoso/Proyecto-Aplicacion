@@ -52,17 +52,28 @@ export default {
         const result = await response.json()
         console.log('Respuesta del backend:', result)
         
-        const token = result.data?.token
-        if (token) {
-          localStorage.setItem('token', token)
-          alert('Inicio de sesión exitoso')
-          this.$router.push('/perfil')
-        } else {
-          alert('Inicio de sesión fallido')
+         // Verificar si la respuesta tiene la estructura esperada
+        if (!result.data || !result.data.token || !result.data.userType) {
+          alert('Respuesta del servidor inesperada')
+          return
         }
+
+        const { token, userType } = result.data
+        
+        // Guardar el token y el tipo de usuario en localStorage
+        localStorage.setItem('token', token)
+        localStorage.setItem('userType', userType)
+
+        // Redirigir según el tipo de usuario
+        if (userType === 'PUBLISHER') {
+          this.$router.push('/publisher-dashboard')
+        } else {
+          this.$router.push('/perfil')
+        }
+
       } catch (error) {
         console.error('Error en la petición:', error)
-        alert('Ocurrió un error al intentar iniciar sesión.')
+        alert('Ocurrió un error al intentar iniciar sesión: ' + error.message)
       }
     }
   }
