@@ -1,5 +1,5 @@
 <template>
-  <div class="perfil-container">
+  <div class="perfil-container"  v-if="user">
     <button class="cerrar-btn" @click="cerrarSesion">Cerrar sesión</button>
 
     <div class="perfil-box">
