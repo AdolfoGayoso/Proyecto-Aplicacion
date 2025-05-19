@@ -81,46 +81,103 @@ export default {
 </script>
 
 
-<style scoped> 
+<style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+body {
+  background-color: #adb8f2; /* color extraído de la imagen */
+  margin: 0;
+  padding: 0;
+}
+
 .login-container {
-  width: 300px; 
-  margin: 100px auto; 
-  background-color: #aab4f3; 
-  padding: 20px; 
-  border-radius: 10px; 
-  text-align: center; 
-  border: 2px solid #6c7cc6; 
-} 
+  font-family: 'Poppins', sans-serif;
+  width: 300px;
+  margin: 100px auto;
+  background-color: #adb8f2; /* blanco por dentro */
+  padding: 20px;
+  border-radius: 12px;
+  text-align: center;
+  border: 2px solid #8795e6;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
 
-input { 
-  display: block; 
-  width: 90%; 
-  margin: 10px auto; 
-  padding: 8px; 
-  border-radius: 6px; 
-  border: 1px solid #888; 
-} 
+h2 {
+  margin-bottom: 20px;
+  color: #3a3a3a;
+  font-weight: 600;
+}
 
+label {
+  display: block;
+  text-align: left;
+  margin: 10px 0 5px 20px;
+  font-size: 14px;
+  color: #333;
+}
 
-.login-button { 
-   background-color: #5cd4e6; 
-   padding: 8px 20px; 
-   border: none; 
-   border-radius: 6px; 
-   margin-top: 10px; 
-   cursor: pointer; 
-} 
-    
-.forgot { 
-  display: block; 
-  margin: 10px 0; 
-   font-size: 13px; 
-  color: #333; 
-} 
-      
-.register { 
-  color: blue; 
-  text-decoration: none; 
-  font-size: 14px; 
-} 
+input {
+  font-family: 'Poppins', sans-serif;
+  display: block;
+  width: 90%;
+  margin: 10px auto;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #aaa;
+  font-size: 14px;
+  transition: border 0.3s ease;
+}
+
+input:focus {
+  border-color: #6b8eea;
+  outline: none;
+}
+
+.login-button {
+  background-color:  #aaa;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  margin-top: 10px;
+  cursor: pointer;
+  color: white;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+}
+
+.login-button:hover {
+  background-color: #49bfd3;
+}
+
+.forgot {
+  display: block;
+  margin: 10px 0;
+  font-size: 13px;
+  color: #555;
+  text-decoration: none;
+}
+
+hr {
+  margin: 15px 0;
+  border: none;
+  border-top: 1px solid #ccc;
+}
+
+p {
+  font-size: 13px;
+  color: #666;
+}
+
+.router-link-active,
+.router-link-exact-active,
+.register {
+  color: #4b6cb7;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.register:hover {
+  text-decoration: underline;
+}
 </style>

@@ -1,15 +1,18 @@
 <template>
-  <div class="perfil-container"  v-if="user">
+  <div class="perfil-container" v-if="user">
     <button class="cerrar-btn" @click="cerrarSesion">Cerrar sesión</button>
 
+    <!-- Bienvenida encima del cuadro -->
+    <p class="bienvenida">Bienvenid@, {{ user.userName || '' }}!</p>
+
     <div class="perfil-box">
-      <p class="bienvenida">Bienvenid@ {{ user.userName || '' }}!</p>
-      <div class="datos-usuario" v-if="user">
+      <div class="datos-usuario">
         <h2>Datos del Usuario</h2>
-        <p>Nombre: {{ user?.userName || 'Nombre no disponible' }}</p>
-        <p>RUT: {{ user.rut || 'Sin RUT' }}</p>
-        <p>{{ user.email }}</p>
+        <p><strong>Nombre:</strong> {{ user?.userName || 'Nombre no disponible' }}</p>
+        <p><strong>RUT:</strong> {{ user.rut || 'Sin RUT' }}</p>
+        <p><strong>Correo:</strong> {{ user.email }}</p>
       </div>
+
       <div class="resumen">
         <h3>Resumen</h3>
         <p>N viajes realizados</p>
@@ -52,13 +55,13 @@ export default {
   methods: {
     async obtenerDatosUsuario() {
       const token = localStorage.getItem('token');
-       if (!token) {
+      if (!token) {
         alert('No hay sesión activa.');
         this.$router.push('/login');
         return;
       }
-       try {
-        const response = await fetch('http://localhost:8080/api/auth/user-info',{
+      try {
+        const response = await fetch('http://localhost:8080/api/auth/user-info', {
           headers: {
             'Authorization': `Bearer ${token}`
           }
@@ -66,13 +69,13 @@ export default {
         if (!response.ok) {
           throw new Error('Error al obtener los datos del usuario');
         }
-         const data = await response.json();
-         this.user = data;
-         console.log('Datos del usuario:', this.user);
+        const data = await response.json();
+        this.user = data;
+        console.log('Datos del usuario:', this.user);
       } catch (error) {
-        console.error('Error al obtener los datos del usuario:', error)
+        console.error('Error al obtener los datos del usuario:', error);
       }
-  },
+    },
     cerrarSesion() {
       localStorage.removeItem('token');
       this.$router.push('/login');
@@ -81,64 +84,77 @@ export default {
 }
 </script>
 
-
 <style scoped>
 .perfil-container {
-  background-color: #c0c0c0;
+  background-color: #e8eaf6;
   padding: 20px;
-  font-family: sans-serif;
-  height: 100vh;
+  font-family: 'Segoe UI', sans-serif;
+  min-height: 100vh;
+  position: relative;
 }
 
 .cerrar-btn {
-  float: right;
-  padding: 8px 12px;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  padding: 10px 16px;
   border-radius: 10px;
-  background-color: #b3b7f0;
+  background-color: #7986cb;
+  color: white;
   border: none;
   cursor: pointer;
+  font-weight: bold;
+}
+
+.bienvenida {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #3f51b5;
+  margin-bottom: 2rem;
+  text-align: center;
 }
 
 .perfil-box {
   display: flex;
   gap: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
   margin-top: 20px;
 }
 
-.datos-usuario {
-  background-color: #b3b7f0;
-  padding: 15px;
+.datos-usuario,
+.resumen {
+  background-color:#adb8f2 ;
+  padding: 20px;
   border-radius: 20px;
-  min-width: 200px;
-  text-align: center;
-}
-
-.bienvenida {
-  font-size: 1.5em;
-  font-weight: bold;
-  margin: 0 0 10px 10px;
-  color: #fff;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+  min-width: 300px;
+  max-width: 400px;
+  flex: 1;
 }
 
 .resumen {
-  background-color: #d1d3ff;
-  padding: 15px;
-  border-radius: 20px;
-  text-align: center;
+  background-color:#adb8f2 ;        
 }
 
 .tickets-btn {
-  background-color: #f5e6ff;
+  background-color:  #f0f2ff;
   border: none;
   margin-top: 10px;
-  padding: 8px;
+  padding: 10px 16px;
   border-radius: 10px;
   cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.3s;
+}
+
+.tickets-btn:hover {
+  background-color: #9fa8da;
 }
 
 .historial {
   margin-top: 40px;
-  background: linear-gradient(to bottom right, #b3b7f0, #7d82d1);
+  background: linear-gradient(to bottom right, #c5cae9, #9fa8da);
   border-radius: 20px;
   padding: 20px;
 }
@@ -150,7 +166,7 @@ export default {
 .fila {
   display: flex;
   justify-content: space-between;
-  background-color: #f5e6ff;
+  background-color: white;
   margin-bottom: 10px;
   padding: 10px;
   border-radius: 15px;

@@ -78,51 +78,70 @@ export default {
 
 <style scoped>
 .registro-container {
+  height: 100vh;
+  background-color: #acb4ec; /* Fondo extraído de la imagen */
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
-  background-color: #c0c0c0;
+  font-family: 'Arial', sans-serif;
+  margin: 0;
+  padding: 0;
 }
 
 .registro-card {
-  background-color: #b3b7f0;
-  padding: 30px;
-  border-radius: 10px;
-  box-shadow: 0 0 5px #999;
-  width: 300px;
+  background-color: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  width: 350px;
   text-align: center;
 }
 
-.registro-card h2 {
-  margin-bottom: 20px;
-  font-weight: bold;
+h2 {
+  color: #2c3e50;
+  margin-bottom: 1.5rem;
 }
 
-.registro-card label {
+label {
   display: block;
+  margin-bottom: 0.5rem;
+  color: #555;
+  font-weight: 500;
+  font-size: 0.9rem;
   text-align: left;
-  margin-top: 10px;
-  color: #333;
 }
 
-.registro-card input {
+input {
   width: 100%;
-  padding: 8px;
-  margin-top: 5px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-  background-color: #f5e6ff;
+  padding: 0.8rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  transition: border 0.3s;
 }
 
-.registro-card button {
-  margin-top: 20px;
-  padding: 10px;
-  width: 100%;
-  background-color: #42c2f5;
+input:focus {
+  outline: none;
+  border-color: #4e73df;
+  box-shadow: 0 0 0 2px rgba(78, 115, 223, 0.2);
+}
+
+.register-btn {
+  background-color: #90caf9; /* Celeste pastel */
+  color: white;
   border: none;
-  border-radius: 10px;
+  padding: 0.8rem;
+  width: 100%;
+  border-radius: 8px;
+  margin-top: 2rem;
   cursor: pointer;
-  color: black;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: background-color 0.3s;
+}
+
+.register-btn:hover {
+  background-color: #64b5f6;
 }
 </style>
