@@ -101,6 +101,7 @@ public class RegisterService {
                     customerRegisterResponse
             );
         } catch (Exception e) {
+            e.printStackTrace();
             customerRegisterResponse.setSuccess(Boolean.FALSE);
             customerRegisterResponse.setUserType(UserType.CUSTOMER.getUserType());
             customerRegisterResponse.setUser(null);
