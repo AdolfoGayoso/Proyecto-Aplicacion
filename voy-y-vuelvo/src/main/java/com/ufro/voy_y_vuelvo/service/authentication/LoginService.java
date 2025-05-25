@@ -24,6 +24,7 @@ public class LoginService {
     public ApiResponse<LoginResponse> loginUser(LoginRequest loginRequest) {
         LoginResponse loginResponse = new LoginResponse();
         Optional<User> user = userRepository.findByEmail(loginRequest.getEmail());
+        System.out.println("Intentando login con email: " + loginRequest.getEmail());
 
         if (user.isEmpty()) {
             loginResponse.setToken(null);

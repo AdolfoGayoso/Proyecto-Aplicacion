@@ -23,6 +23,7 @@ public class EmailVerificationService {
     public void sendVerificationEmail(String sendTo, String emailVerificationCode) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(sendTo);
+        message.setFrom("voyyvuelvocomprapasajes@gmail.com");
         message.setSubject("Verifica tu email - Voy y Vuelvo");
         message.setText(String.format(
                 "Por favor verifica tu email haciendo click en el siguiente enlace:\n" +

@@ -12,11 +12,6 @@ SELECT * FROM voyyvuelvov2.trip;
 SELECT * FROM voyyvuelvov2.stop;
 SELECT * FROM voyyvuelvov2.trip_stop_order;
 
-INSERT INTO stop (latitude, longitude, name) 
-VALUES 
-	('1','1','testParada1'),
-	('2','2','testParada2');
-    
 INSERT INTO users (
     user_type, 
     password, 
