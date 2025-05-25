@@ -81,7 +81,7 @@ public class RegisterService {
         customer.setRut(request.getRut());
         customer.setUserType(UserType.CUSTOMER.getUserType());
 
-        // Datos validacion por email (tod o)
+        // Enviar mail de verificacion
         customer.setEmailVerificationCode(emailVerificationCode);
         customer.setEmailVerified(Boolean.FALSE);
 
