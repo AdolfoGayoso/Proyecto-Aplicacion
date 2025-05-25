@@ -105,11 +105,13 @@ export default {
 </script>
 
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
 .publisher-container {
-  background-color: #f5f5f5;
+  background-color: #adb8f2;
   min-height: 100vh;
   padding: 20px;
-  font-family: 'Segoe UI', sans-serif;
+  font-family: 'Poppins', sans-serif;
 }
 
 .header {
@@ -118,45 +120,47 @@ export default {
 }
 
 .header h1 {
-  color: #2c3e50;
+  color: #3a3a3a;
   margin-bottom: 5px;
+  font-weight: 600;
 }
 
 .header h2 {
-  color: #555;
-  font-size: 1.2em;
+  color: #5f5f5f;
+  font-size: 1.1em;
 }
 
 .company-info {
   background-color: #ffffff;
-  border-radius: 10px;
+  border-radius: 12px;
   padding: 20px;
   margin-bottom: 20px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
 }
 
 .company-info h3 {
   margin-top: 0;
-  color: #2c3e50;
+  color: #354259;
 }
 
 .company-details {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: 10px;
+  margin-top: 10px;
 }
 
 .active-trips {
   background-color: #ffffff;
-  border-radius: 10px;
+  border-radius: 12px;
   padding: 20px;
   margin-bottom: 20px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
 }
 
 .active-trips h3 {
   margin-top: 0;
-  color: #2c3e50;
+  color: #354259;
 }
 
 table {
@@ -167,16 +171,17 @@ table {
 th, td {
   padding: 12px 15px;
   text-align: left;
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid #0d0c0c;
 }
 
 th {
-  background-color: #f8f8f8;
-  font-weight: bold;
+  background-color: #f2f6fb;
+  font-weight: 600;
+  color: #2f3b52;
 }
 
 tr:hover {
-  background-color: #f5f5f5;
+  background-color: #8e9299;
 }
 
 .action-btn {
@@ -185,50 +190,62 @@ tr:hover {
   cursor: pointer;
   font-size: 1.2em;
   margin: 0 5px;
+  color: #4a4a4a;
 }
 
 .actions {
   display: flex;
   justify-content: space-between;
   margin-top: 20px;
+  flex-wrap: wrap;
+  gap: 10px;
 }
 
 .primary-btn {
-  background-color: #4CAF50;
+  background-color: #555;
   color: white;
   border: none;
-  padding: 10px 20px;
-  border-radius: 5px;
+  padding: 10px 22px;
+  border-radius: 8px;
   cursor: pointer;
   font-size: 1em;
-}
-
-.secondary-btn {
-  background-color: #f44336;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 1em;
+  font-weight: 500;
+  transition: background-color 0.3s ease;
 }
 
 .primary-btn:hover {
-  background-color: #45a049;
+  background-color: #4ac2d4;
+}
+
+.secondary-btn {
+  background-color: #f86c6c;
+  color: white;
+  border: none;
+  padding: 10px 22px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1em;
+  font-weight: 500;
+  transition: background-color 0.3s ease;
 }
 
 .secondary-btn:hover {
-  background-color: #d32f2f;
+  background-color: #dd5555;
 }
 
 @media (max-width: 768px) {
   .company-details {
     grid-template-columns: 1fr;
   }
-  
+
   table {
     display: block;
     overflow-x: auto;
+  }
+
+  .actions {
+    flex-direction: column;
+    align-items: stretch;
   }
 }
 </style>
