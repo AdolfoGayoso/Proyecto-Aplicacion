@@ -12,20 +12,15 @@ SELECT * FROM voyyvuelvov2.trip;
 SELECT * FROM voyyvuelvov2.stop;
 SELECT * FROM voyyvuelvov2.trip_stop_order;
 
-INSERT INTO users (
-    user_type, 
-    password, 
-    rut, 
-    user_name, 
-    email
-) VALUES (
-    'PUBLISHER', 
-    '$2a$10$avYGFvGVuhn1uaek5.AXyOLuCJcRcW2Zcq283HYrqnIUOD0UNwkue', # contraseñapublisher
-    '12345678-9', 
-    'nombrePublicador', 
-    'publicador@example.com'
-);
-
+INSERT INTO users (id, user_type, password, rut, user_name, email) VALUES
+(1, 'PUBLISHER', '$2a$10$avYGFvGVuhn1uaek5.AXyOLuCJcRcW2Zcq283HYrqnIUOD0UNwkue', '11.111.111-1', 'nombrePublicador1', 'nombrePublicador1@voyyvuelvo.com'),
+(2, 'PUBLISHER', '$2a$10$avYGFvGVuhn1uaek5.AXyOLuCJcRcW2Zcq283HYrqnIUOD0UNwkue', '11.111.111-2', 'nombrePublicador2', 'nombrePublicador2@voyyvuelvo.com'),
+(3, 'PUBLISHER', '$2a$10$avYGFvGVuhn1uaek5.AXyOLuCJcRcW2Zcq283HYrqnIUOD0UNwkue', '11.111.111-3', 'nombrePublicador3', 'nombrePublicador3@voyyvuelvo.com'),
+(4, 'PUBLISHER', '$2a$10$avYGFvGVuhn1uaek5.AXyOLuCJcRcW2Zcq283HYrqnIUOD0UNwkue', '11.111.111-4', 'nombrePublicador4', 'nombrePublicador4@voyyvuelvo.com'),
+(5, 'PUBLISHER', '$2a$10$avYGFvGVuhn1uaek5.AXyOLuCJcRcW2Zcq283HYrqnIUOD0UNwkue', '11.111.111-5', 'nombrePublicador5', 'nombrePublicador5@voyyvuelvo.com')
+;				# contraseñapublisher
+				  
+                  
 INSERT INTO voyyvuelvov2.stop (name, latitude, longitude) VALUES
 ('Angol', -37.8025, -72.7161),
 ('Carahue', -38.7058, -73.1658),
