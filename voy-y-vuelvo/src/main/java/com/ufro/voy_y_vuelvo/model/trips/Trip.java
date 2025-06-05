@@ -18,7 +18,7 @@ public class Trip {
     private Long id;
     private Boolean active;
     private Integer seatsNumber;
-    private String plateNumber;
+    private String plateNumbers;
     private Integer price;
     private LocalDate departureDate;
     private LocalTime departureTime;
