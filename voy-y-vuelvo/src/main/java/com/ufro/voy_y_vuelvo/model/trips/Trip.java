@@ -17,8 +17,8 @@ public class Trip {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Boolean active;
-    private Integer seatsNumber;
-    private String plateNumbers;
+    private Integer numSeats;
+    private String plateNumber;
     private Integer price;
     private LocalDate departureDate;
     private LocalTime departureTime;
