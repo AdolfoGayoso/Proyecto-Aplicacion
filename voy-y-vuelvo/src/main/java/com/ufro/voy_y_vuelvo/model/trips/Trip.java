@@ -1,5 +1,6 @@
 package com.ufro.voy_y_vuelvo.model.trips;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.ufro.voy_y_vuelvo.model.users.Publisher;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -25,6 +26,7 @@ public class Trip {
 
     @ManyToOne
     @JoinColumn(name = "publisher_id")
+    @JsonBackReference
     private Publisher publisher;
 
     @OneToMany(mappedBy = "trip", cascade = CascadeType.ALL, orphanRemoval = true)

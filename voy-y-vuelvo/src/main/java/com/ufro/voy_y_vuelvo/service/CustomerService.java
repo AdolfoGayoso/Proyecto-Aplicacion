@@ -10,8 +10,6 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class CustomerService {
 
-    private final PasswordEncoder passwordEncoder;
-
     public UserDto toDto(Customer customer) {
         UserDto userDto = new UserDto();
         userDto.setUserName(customer.getUserName());
