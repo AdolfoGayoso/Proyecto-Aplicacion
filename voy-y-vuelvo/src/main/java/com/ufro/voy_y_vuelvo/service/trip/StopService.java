@@ -1,6 +1,6 @@
-package com.ufro.voy_y_vuelvo.service;
+package com.ufro.voy_y_vuelvo.service.trip;
 
-import com.ufro.voy_y_vuelvo.dto.StopDto;
+import com.ufro.voy_y_vuelvo.dto.trip.StopDto;
 import com.ufro.voy_y_vuelvo.model.trips.Stop;
 import com.ufro.voy_y_vuelvo.repository.StopRepository;
 import lombok.RequiredArgsConstructor;
@@ -26,8 +26,6 @@ public class StopService {
         return stopRepository.findStopByNameIgnoreCase(name)
                 .map(this::toDto);
     }
-
-    
 
     public StopDto toDto(Stop stop) {
         StopDto stopDto = new StopDto();

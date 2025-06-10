@@ -1,4 +1,4 @@
-package com.ufro.voy_y_vuelvo.dto;
+package com.ufro.voy_y_vuelvo.dto.trip;
 
 import lombok.Getter;
 import lombok.Setter;

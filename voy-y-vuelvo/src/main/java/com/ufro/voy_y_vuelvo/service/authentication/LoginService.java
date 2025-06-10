@@ -68,7 +68,7 @@ public class LoginService {
 
             loginResponse.setToken(jwtUtils.generateToken(user.get().getEmail(), user.get().getUserType()));
             loginResponse.setEmail(user.get().getEmail());
-            loginResponse.setUsername(user.get().getEmail());
+            loginResponse.setUsername(user.get().getUserName());
             loginResponse.setUserType(user.get().getUserType());
             return new ApiResponse<>(
                     200,
