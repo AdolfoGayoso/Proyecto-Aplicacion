@@ -27,8 +27,6 @@ public class StopService {
                 .map(this::toDto);
     }
 
-    
-
     public StopDto toDto(Stop stop) {
         StopDto stopDto = new StopDto();
         stopDto.setId(stop.getId());
