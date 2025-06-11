@@ -20,11 +20,4 @@ public class LoginController {
         ApiResponse<LoginResponse> response = loginService.loginUser(loginRequest);
         return ResponseEntity.status(response.getStatus()).body(response);
     }
-
-    @GetMapping("/user-info")
-    public User getUserInfo(@RequestHeader("Authorization") String token) {
-        // Eliminar "Bearer " del token si está presente
-        String jwt = token.replace("Bearer ", "");
-        return loginService.getUserFromToken(jwt);
-    }
 }
