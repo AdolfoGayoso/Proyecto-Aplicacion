@@ -1,6 +1,7 @@
 <template>
   <div class="container">
     <div class="logo">
+      <img src="@/assets/logo.png" alt="Logo" />
       <h1>Voy y Vuelvo</h1>
       <p>Más nuevo que nunca</p>
     </div>
@@ -8,59 +9,58 @@
     <div class="form-box">
       <!-- Origen -->
       <div class="input-group">
-  <label>Origen</label>
-  <div class="input-icon">
-    <span>📍</span>
-    <input
-      type="text"
-      v-model="origin"
-      placeholder="Origen"
-      @input="filtrarSugerencias('origin')"
-      @focus="filtrarSugerencias('origin')"
-    />
-  </div>
-  <!-- Lista de sugerencias -->
-  <ul v-if="showOriginSuggestions && filteredStops.length && origin.length > 0" class="suggestions-list">
-    <li v-for="stop in filteredStops" :key="stop.id" @click="seleccionarSugerencia(stop.name, 'origin')">
-      {{ stop.name }}
-    </li>
-  </ul>
-</div>
+        <label>Origen</label>
+        <div class="input-icon">
+          <span class="material-icons">location_on</span>
+          <input
+            type="text"
+            v-model="origin"
+            placeholder="Origen"
+            @input="filtrarSugerencias('origin')"
+            @focus="filtrarSugerencias('origin')"
+          />
+        </div>
+        <!-- Lista de sugerencias -->
+        <ul v-if="showOriginSuggestions && filteredStops.length && origin.length > 0" class="suggestions-list" >
+          <li v-for="stop in filteredStops" :key="stop.id" @click="seleccionarSugerencia(stop.name, 'origin')">
+            {{ stop.name }}
+          </li>
+        </ul>
+      </div>
 
       <!-- Destino -->
-<div class="input-group">
-  <label>Destino</label>
-  <div class="input-icon">
-    <span>📍</span>
-    <input
-      type="text"
-      v-model="destination"
-      placeholder="Destino"
-      @input="filtrarSugerencias('destination')"
-      @focus="filtrarSugerencias('destination')"
-    />
-  </div>
-  <!-- Lista de sugerencias para DESTINO -->
-  <ul
-    v-if="showDestinationSuggestions && filteredStops.length && destination.length > 0"
-    class="suggestions-list"
-  >
-    <li
-      v-for="stop in filteredStops"
-      :key="stop.id"
-      @click="seleccionarSugerencia(stop.name, 'destination')"
-    >
-      {{ stop.name }}
-    </li>
-  </ul>
-</div>
-
+      <div class="input-group">
+        <label>Destino</label>
+        <div class="input-icon">
+          <span class="material-icons">location_on</span>
+          <input
+            type="text"
+            v-model="destination"
+            placeholder="Destino"
+            @input="filtrarSugerencias('destination')"
+            @focus="filtrarSugerencias('destination')"
+          />
+        </div>
+        <!-- Lista de sugerencias para DESTINO -->
+        <ul
+          v-if="showDestinationSuggestions && filteredStops.length && destination.length > 0"
+          class="suggestions-list"
+        >
+          <li
+            v-for="stop in filteredStops"
+            :key="stop.id"
+            @click="seleccionarSugerencia(stop.name, 'destination')"
+          >
+            {{ stop.name }}
+          </li>
+        </ul>
+      </div>
 
       <!-- Fecha -->
       <div class="input-group">
         <label>Fecha</label>
         <div class="input-icon">
-          <span>📅</span>
+          <span class="material-icons">calendar_today</span>
           <input type="date" v-model="date" />
         </div>
       </div>
@@ -69,7 +69,7 @@
       <div class="input-group">
         <label>Hora de salida</label>
         <div class="input-icon">
-          <span>⏰</span>
+          <span class="material-icons">schedule</span>
           <input type="time" v-model="departureTime" />
         </div>
       </div>
@@ -80,11 +80,16 @@
 
     <!-- Botones abajo -->
     <div class="bottom-icons">
-      <button @click="$router.push('/login')">👤</button>
-      <button>❓</button>
+      <button @click="$router.push('/login')">
+        <span class="material-icons">account_circle</span>
+      </button>
+      <button>
+        <span class="material-icons">help_outline</span>
+      </button>
     </div>
   </div>
 </template>
+
 <script>
 export default {
   name: 'BuscadorPrincipal',
@@ -189,10 +194,9 @@ export default {
 }
 </script>
 
-
 <style scoped>
 .container {
-  background-color: #c4c4c4;
+  background-color: #9698d6;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -202,23 +206,24 @@ export default {
 }
 .logo {
   text-align: center;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
 }
 .logo img {
-  height: 80px;
+  width: 200px;
+  margin-top: 0px;
 }
 .logo h1 {
-  margin: 10px 0 0;
-  color: #2c3e50;
+  margin: 0px 0 0;
+  color: black;
 }
 .logo p {
   margin: 5px 0;
-  color: #555;
+  color: black;
   font-size: 1.1em;
 }
 .form-box {
   display: flex;
-  background-color: #9698d6;
+  background-color: white;
   padding: 20px;
   border-radius: 20px;
   gap: 10px;
@@ -229,7 +234,7 @@ export default {
   display: flex;
   flex-direction: column;
   margin-right: 10px;
-  position: relative; /* <--- ESTE es el cambio clave */
+  position: relative;
 }
 .input-group label {
   font-size: 0.8em;
@@ -243,8 +248,10 @@ export default {
   border-radius: 20px;
   padding: 5px 10px;
 }
-.input-icon span {
+.input-icon span.material-icons {
+  font-size: 20px;
   margin-right: 8px;
+  color: black;
 }
 .input-icon input {
   border: none;
@@ -253,7 +260,7 @@ export default {
   padding: 5px;
 }
 .search-btn {
-  background-color: #5dd0e7;
+  background-color: #9698d6;
   color: #111;
   border: none;
   border-radius: 20px;
@@ -267,30 +274,18 @@ export default {
   gap: 20px;
 }
 .bottom-icons button {
-  background-color: #9698d6;
+  background-color: white;
   border: none;
   border-radius: 20px;
   padding: 10px 15px;
-  font-size: 1.2em;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-.results {
-  margin-top: 20px;
-  background-color: #fff;
-  padding: 15px;
-  border-radius: 10px;
-  width: 80%;
-  max-width: 600px;
-}
-.results h2 {
-  margin-bottom: 10px;
-}
-.results ul {
-  list-style: none;
-  padding: 0;
-}
-.results li {
-  margin-bottom: 5px;
+.bottom-icons .material-icons {
+  font-size: 24px;
+  color: black;
 }
 .suggestions-list {
   list-style: none;
@@ -302,11 +297,11 @@ export default {
   max-height: 150px;
   overflow-y: auto;
   position: absolute;
-  top: 100%; /* <--- NUEVO */
-  left: 0;   /* <--- NUEVO */
+  top: 100%;
+  left: 0;
   z-index: 10;
   width: 100%;
-  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1); /* opcional, para que se vea mejor */
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
 }
 .suggestions-list li {
   padding: 8px;
@@ -316,4 +311,3 @@ export default {
   background-color: #f0f0f0;
 }
 </style>
-
