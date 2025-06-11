@@ -32,10 +32,9 @@ public class TripController {
         return ResponseEntity.status(response.getStatus()).body(response);
     }
 
-    @GetMapping("/filter")
+    @PostMapping("/filter")
     public ResponseEntity<ApiResponse<?>> searchTrips(@RequestBody TripSearchRequestDto request) {
         ApiResponse<?> response = tripService.searchTripByFilters(request);
         return ResponseEntity.status(response.getStatus()).body(response);
     }
-
 }
