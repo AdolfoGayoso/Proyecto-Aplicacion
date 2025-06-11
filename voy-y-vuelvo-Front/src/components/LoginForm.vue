@@ -1,22 +1,25 @@
 <template>
   <div class="login-container">
-    <h2>Inicio de sesión</h2>
-    <label>Correo electrónico</label>
-<input type="email" v-model="email" />
+    <div class="login-card">
+      <h2>Inicio de sesión</h2>
 
-<label>Contraseña</label>
-<input type="password" v-model="password" />
+      <label for="email">Correo electrónico</label>
+      <input type="email" id="email" v-model="email" />
 
-<button class="login-button" @click="iniciarSesion">Ingresar</button>
+      <label for="password">Contraseña</label>
+      <input type="password" id="password" v-model="password" />
 
-<a href="#" class="forgot">¿Olvidó su contraseña?</a>
+      <button class="login-btn" @click="iniciarSesion">Ingresar</button>
 
-<hr />
-<p>o</p>
-<router-link to="/registro">Regístrese aquí</router-link>
+      <a href="#" class="forgot">¿Olvidó su contraseña?</a>
 
+      <hr />
+      <p>o</p>
+      <router-link to="/registro" class="register-link">Regístrese aquí</router-link>
+    </div>
   </div>
-</template> 
+</template>
+
 <script>
 export default {
   name: 'LoginForm',
@@ -52,7 +55,6 @@ export default {
         const result = await response.json()
         console.log('Respuesta del backend:', result)
         
-         // Verificar si la respuesta tiene la estructura esperada
         if (!result.data || !result.data.token || !result.data.userType) {
           alert('Respuesta del servidor inesperada')
           return
@@ -60,11 +62,9 @@ export default {
 
         const { token, userType } = result.data
         
-        // Guardar el token y el tipo de usuario en localStorage
         localStorage.setItem('token', token)
         localStorage.setItem('userType', userType)
 
-        // Redirigir según el tipo de usuario
         if (userType === 'PUBLISHER') {
           this.$router.push('/publisher-dashboard')
         } else {
@@ -80,81 +80,95 @@ export default {
 }
 </script>
 
-
 <style scoped>
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
-
-body {
-  background-color: #adb8f2; /* color extraído de la imagen */
+.login-container {
+  height: 100vh;
+  background-color: #9698d6; /* Fondo celeste pastel */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Arial', sans-serif;
   margin: 0;
   padding: 0;
 }
 
-.login-container {
-  font-family: 'Poppins', sans-serif;
-  width: 300px;
-  margin: 100px auto;
-  background-color: #adb8f2; /* blanco por dentro */
-  padding: 20px;
+.login-card {
+  background-color: white;
+  padding: 2rem;
   border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  width: 350px;
   text-align: center;
-  border: 2px solid #8795e6;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 h2 {
-  margin-bottom: 20px;
-  color: #3a3a3a;
-  font-weight: 600;
+  color: black;
+  margin-bottom: 1.5rem;
 }
 
 label {
   display: block;
+  margin-bottom: 0.5rem;
+  color: black;
+  font-weight: 500;
+  font-size: 0.9rem;
   text-align: left;
-  margin: 10px 0 5px 20px;
-  font-size: 14px;
-  color: #333;
 }
 
 input {
-  font-family: 'Poppins', sans-serif;
-  display: block;
-  width: 90%;
-  margin: 10px auto;
-  padding: 10px;
+  width: 100%;
+  padding: 0.8rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ddd;
   border-radius: 8px;
-  border: 1px solid #aaa;
-  font-size: 14px;
-  transition: border 0.3s ease;
+  font-size: 0.9rem;
+  transition: border 0.3s;
+  background-color: white; /* siempre blanco */
 }
 
 input:focus {
-  border-color: #6b8eea;
   outline: none;
+  border-color: #ddd;
+  box-shadow: none;
+  background-color: white;
 }
 
-.login-button {
-  background-color:  #aaa;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 8px;
-  margin-top: 10px;
-  cursor: pointer;
+/* Para inputs autocompletados */
+input:-webkit-autofill {
+  box-shadow: 0 0 0px 1000px white inset !important;
+  -webkit-box-shadow: 0 0 0px 1000px white inset !important;
+  background-color: white !important;
+  color: #000;
+}
+
+.login-btn {
+  background-color: #9698d6; /* Celeste pastel */
   color: white;
+  border: none;
+  padding: 0.8rem;
+  width: 100%;
+  border-radius: 8px;
+  margin-top: 1rem;
+  cursor: pointer;
   font-weight: 600;
-  transition: background-color 0.3s ease;
+  font-size: 1rem;
+  transition: background-color 0.3s;
 }
 
-.login-button:hover {
-  background-color: #49bfd3;
+.login-btn:hover {
+  background-color: #9698d6;
 }
 
 .forgot {
   display: block;
   margin: 10px 0;
-  font-size: 13px;
-  color: #555;
+  font-size: 0.85rem;
+  color: black;
   text-decoration: none;
+}
+
+.forgot:hover {
+  text-decoration: underline;
 }
 
 hr {
@@ -164,20 +178,18 @@ hr {
 }
 
 p {
-  font-size: 13px;
-  color: #666;
+  font-size: 0.85rem;
+  color: black;
 }
 
-.router-link-active,
-.router-link-exact-active,
-.register {
-  color: #4b6cb7;
+.register-link {
+  color: #9698d6;
   text-decoration: none;
-  font-size: 14px;
+  font-size: 0.9rem;
   font-weight: 500;
 }
 
-.register:hover {
+.register-link:hover {
   text-decoration: underline;
 }
 </style>
