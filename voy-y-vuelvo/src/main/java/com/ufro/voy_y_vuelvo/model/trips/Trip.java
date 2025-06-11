@@ -18,7 +18,8 @@ public class Trip {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Boolean active;
-    private Integer numSeats;
+    private Integer numTotalSeats;
+
     private String plateNumber;
     private Integer price;
     private LocalDate departureDate;
@@ -32,4 +33,5 @@ public class Trip {
     @OneToMany(mappedBy = "trip", cascade = CascadeType.ALL, orphanRemoval = true)
     @OrderBy("stopOrder ASC")
     private List<TripStopOrder> stops;
+
 }

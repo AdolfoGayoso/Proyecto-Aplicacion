@@ -6,6 +6,7 @@ import com.ufro.voy_y_vuelvo.dto.authetication.login.LoginResponse;
 import com.ufro.voy_y_vuelvo.model.users.User;
 import com.ufro.voy_y_vuelvo.service.authentication.LoginService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -15,8 +16,9 @@ public class LoginController {
     private final LoginService loginService;
 
     @PostMapping("/user/login")
-    public ApiResponse<LoginResponse> login(@RequestBody LoginRequest loginRequest) {
-        return loginService.loginUser(loginRequest);
+    public ResponseEntity<ApiResponse<LoginResponse>> login(@RequestBody LoginRequest loginRequest) {
+        ApiResponse<LoginResponse> response = loginService.loginUser(loginRequest);
+        return ResponseEntity.status(response.getStatus()).body(response);
     }
 
     @GetMapping("/user-info")
