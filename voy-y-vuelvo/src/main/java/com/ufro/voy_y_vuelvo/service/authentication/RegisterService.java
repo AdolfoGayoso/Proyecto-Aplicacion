@@ -7,7 +7,7 @@ import com.ufro.voy_y_vuelvo.model.users.Customer;
 import com.ufro.voy_y_vuelvo.model.users.UserType;
 import com.ufro.voy_y_vuelvo.repository.CustomerRepository;
 import com.ufro.voy_y_vuelvo.repository.UserRepository;
-import com.ufro.voy_y_vuelvo.service.CustomerService;
+import com.ufro.voy_y_vuelvo.service.user.CustomerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

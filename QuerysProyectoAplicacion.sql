@@ -1,3 +1,6 @@
+drop database voyyvuelvov2;
+create database voyyvuelvov2;
+
 SELECT * FROM voyyvuelvov2.stop;
 SELECT * FROM voyyvuelvov2.trip;
 
@@ -8,13 +11,22 @@ SELECT * FROM voyyvuelvov2.stop;
 SELECT * FROM voyyvuelvov2.trip;
 SELECT * FROM voyyvuelvov2.trip_stop_order;
 
-INSERT INTO voyyvuelvov2.users (id, user_type, password, rut, user_name, email) VALUES
-(1, 'PUBLISHER', '$2a$10$avYGFvGVuhn1uaek5.AXyOLuCJcRcW2Zcq283HYrqnIUOD0UNwkue', '11.111.111-1', 'nombrePublicador1', 'nombrePublicador1@voyyvuelvo.com'),
-(2, 'PUBLISHER', '$2a$10$avYGFvGVuhn1uaek5.AXyOLuCJcRcW2Zcq283HYrqnIUOD0UNwkue', '11.111.111-2', 'nombrePublicador2', 'nombrePublicador2@voyyvuelvo.com'),
-(3, 'PUBLISHER', '$2a$10$avYGFvGVuhn1uaek5.AXyOLuCJcRcW2Zcq283HYrqnIUOD0UNwkue', '11.111.111-3', 'nombrePublicador3', 'nombrePublicador3@voyyvuelvo.com'),
-(4, 'PUBLISHER', '$2a$10$avYGFvGVuhn1uaek5.AXyOLuCJcRcW2Zcq283HYrqnIUOD0UNwkue', '11.111.111-4', 'nombrePublicador4', 'nombrePublicador4@voyyvuelvo.com'),
-(5, 'PUBLISHER', '$2a$10$avYGFvGVuhn1uaek5.AXyOLuCJcRcW2Zcq283HYrqnIUOD0UNwkue', '11.111.111-5', 'nombrePublicador5', 'nombrePublicador5@voyyvuelvo.com')
-;				# contraseñapublisher
+INSERT INTO voyyvuelvov2.users (user_type,password, rut, user_name, email) VALUES
+('PUBLISHER', '$2a$10$avYGFvGVuhn1uaek5.AXyOLuCJcRcW2Zcq283HYrqnIUOD0UNwkue', '11.111.111-1', 'nombrePublicador1', 'nombrePublicador1@voyyvuelvo.com'),
+('PUBLISHER', '$2a$10$avYGFvGVuhn1uaek5.AXyOLuCJcRcW2Zcq283HYrqnIUOD0UNwkue', '11.111.111-2', 'nombrePublicador2', 'nombrePublicador2@voyyvuelvo.com'),
+('PUBLISHER', '$2a$10$avYGFvGVuhn1uaek5.AXyOLuCJcRcW2Zcq283HYrqnIUOD0UNwkue', '11.111.111-3', 'nombrePublicador3', 'nombrePublicador3@voyyvuelvo.com'),
+('PUBLISHER', '$2a$10$avYGFvGVuhn1uaek5.AXyOLuCJcRcW2Zcq283HYrqnIUOD0UNwkue', '11.111.111-4', 'nombrePublicador4', 'nombrePublicador4@voyyvuelvo.com'),
+('PUBLISHER', '$2a$10$avYGFvGVuhn1uaek5.AXyOLuCJcRcW2Zcq283HYrqnIUOD0UNwkue', '11.111.111-5', 'nombrePublicador5', 'nombrePublicador5@voyyvuelvo.com')
+;			 # contraseñapublisher
+
+INSERT INTO voyyvuelvov2.users (user_type, email_verified, password, rut, user_name, email, points) VALUES
+('CUSTOMER', true, '$2a$10$avYGFvGVuhn1uaek5.AXyOLuCJcRcW2Zcq283HYrqnIUOD0UNwkue', '21.111.111-1', 'usuarioRegistrado1', 'usuario1@gmail.com', 0),
+('CUSTOMER', true, '$2a$10$avYGFvGVuhn1uaek5.AXyOLuCJcRcW2Zcq283HYrqnIUOD0UNwkue', '21.111.111-2', 'usuarioRegistrado2', 'usuario2@gmail.com', 0),
+('CUSTOMER', true, '$2a$10$avYGFvGVuhn1uaek5.AXyOLuCJcRcW2Zcq283HYrqnIUOD0UNwkue', '21.111.111-3', 'usuarioRegistrado3', 'usuario3@gmail.com', 0),
+('CUSTOMER', true, '$2a$10$avYGFvGVuhn1uaek5.AXyOLuCJcRcW2Zcq283HYrqnIUOD0UNwkue', '21.111.111-4', 'usuarioRegistrado4', 'usuario4@gmail.com', 0),
+('CUSTOMER', true, '$2a$10$avYGFvGVuhn1uaek5.AXyOLuCJcRcW2Zcq283HYrqnIUOD0UNwkue', '21.111.111-5', 'usuarioRegistrado5', 'usuario5@gmail.com', 0)
+;			 # contraseñapublisher
+
 
 INSERT INTO voyyvuelvov2.stop (id, name, latitude, longitude) VALUES
 (1, 'Angol', -37.8025, -72.7161),
@@ -50,7 +62,7 @@ INSERT INTO voyyvuelvov2.stop (id, name, latitude, longitude) VALUES
 (31, 'Vilcún', -38.6500, -72.2333),
 (32, 'Villarrica', -39.2786, -72.2258);
 
-INSERT INTO voyyvuelvov2.trip (id, active, num_seats, plate_number, price, departure_date, departure_time, publisher_id) VALUES
+INSERT INTO voyyvuelvov2.trip (id, active, num_total_seats, plate_number, price, departure_date, departure_time, publisher_id) VALUES
 (1, true, 10, 'abcde', 1234, '2025-06-27', '18:00:00', 1)
 ;
 INSERT INTO voyyvuelvov2.trip_stop_order (trip_id, stop_id, stop_order) VALUES
@@ -58,23 +70,23 @@ INSERT INTO voyyvuelvov2.trip_stop_order (trip_id, stop_id, stop_order) VALUES
 ;
 
 -- Viaje 2: desde Temuco a Villarrica
-INSERT INTO voyyvuelvov2.trip (id, active, num_seats, plate_number, price, departure_date, departure_time, publisher_id) VALUES
+INSERT INTO voyyvuelvov2.trip (id, active, num_total_seats, plate_number, price, departure_date, departure_time, publisher_id) VALUES
 (2, true, 20, 'BBBB1', 3000, '2025-06-27', '07:30:00', 1);
 
 -- Viaje 3: desde Curacautín a Loncoche
-INSERT INTO voyyvuelvov2.trip (id, active, num_seats, plate_number, price, departure_date, departure_time, publisher_id) VALUES
+INSERT INTO voyyvuelvov2.trip (id, active, num_total_seats, plate_number, price, departure_date, departure_time, publisher_id) VALUES
 (3, true, 15, 'CCCC2', 4000, '2025-06-27', '12:00:00', 1);
 
 -- Viaje 4: desde Angol a Traiguén (otro día)
-INSERT INTO voyyvuelvov2.trip (id, active, num_seats, plate_number, price, departure_date, departure_time, publisher_id) VALUES
+INSERT INTO voyyvuelvov2.trip (id, active, num_total_seats, plate_number, price, departure_date, departure_time, publisher_id) VALUES
 (4, true, 18, 'DDDD3', 3500, '2025-06-28', '10:15:00', 1);
 
 -- Viaje 5: desde Pucón a Temuco (más tarde)
-INSERT INTO voyyvuelvov2.trip (id, active, num_seats, plate_number, price, departure_date, departure_time, publisher_id) VALUES
+INSERT INTO voyyvuelvov2.trip (id, active, num_total_seats, plate_number, price, departure_date, departure_time, publisher_id) VALUES
 (5, true, 25, 'EEEE4', 5000, '2025-06-27', '19:45:00', 1);
 
 -- Viaje 6: desde Perquenco a Villarrica
-INSERT INTO voyyvuelvov2.trip (id, active, num_seats, plate_number, price, departure_date, departure_time, publisher_id) VALUES
+INSERT INTO voyyvuelvov2.trip (id, active, num_total_seats, plate_number, price, departure_date, departure_time, publisher_id) VALUES
 (6, true, 20, 'BBBB1', 3000, '2025-06-27', '07:30:00', 1);
 
 -- Trip 2: Temuco (27) → Padre Las Casas (19) → Freire (9) → Villarrica (32)

@@ -5,7 +5,6 @@ import com.ufro.voy_y_vuelvo.dto.ApiResponse;
 import com.ufro.voy_y_vuelvo.dto.authetication.register.EmailValidationResponse;
 import com.ufro.voy_y_vuelvo.model.users.Customer;
 import com.ufro.voy_y_vuelvo.repository.CustomerRepository;
-import com.ufro.voy_y_vuelvo.service.CustomerService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.SimpleMailMessage;
