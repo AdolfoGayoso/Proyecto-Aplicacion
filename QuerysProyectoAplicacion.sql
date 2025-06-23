@@ -27,7 +27,6 @@ INSERT INTO voyyvuelvov2.users (user_type, email_verified, password, rut, user_n
 ('CUSTOMER', true, '$2a$10$avYGFvGVuhn1uaek5.AXyOLuCJcRcW2Zcq283HYrqnIUOD0UNwkue', '21.111.111-5', 'usuarioRegistrado5', 'usuario5@gmail.com', 0)
 ;			 # contraseñapublisher
 
-
 INSERT INTO voyyvuelvov2.stop (id, name, latitude, longitude) VALUES
 (1, 'Angol', -37.8025, -72.7161),
 (2, 'Carahue', -38.7058, -73.1658),
