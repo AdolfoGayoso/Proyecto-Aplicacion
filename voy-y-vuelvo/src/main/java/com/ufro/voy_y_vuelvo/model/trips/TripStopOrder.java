@@ -23,5 +23,7 @@ public class TripStopOrder {
     @JoinColumn(name = "stop_id")
     private Stop stop;
 
-    private int stopOrder;
+    private Integer availableSeats;
+
+    private Integer stopOrder;
 }

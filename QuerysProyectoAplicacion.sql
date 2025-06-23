@@ -65,8 +65,8 @@ INSERT INTO voyyvuelvov2.stop (id, name, latitude, longitude) VALUES
 INSERT INTO voyyvuelvov2.trip (id, active, num_total_seats, plate_number, price, departure_date, departure_time, publisher_id) VALUES
 (1, true, 10, 'abcde', 1234, '2025-06-27', '18:00:00', 1)
 ;
-INSERT INTO voyyvuelvov2.trip_stop_order (trip_id, stop_id, stop_order) VALUES
-(1, 1, 1),(1, 2, 2),(1, 3, 3),(1, 4, 4),(1, 5, 5)
+INSERT INTO voyyvuelvov2.trip_stop_order (trip_id, stop_id, stop_order, available_seats) VALUES
+(1, 1, 1, 10),(1, 2, 2, 10),(1, 3, 3, 10),(1, 4, 4, 10),(1, 5, 5, 10)
 ;
 
 -- Viaje 2: desde Temuco a Villarrica

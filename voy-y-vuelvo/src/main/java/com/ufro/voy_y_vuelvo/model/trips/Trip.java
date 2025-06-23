@@ -33,5 +33,4 @@ public class Trip {
     @OneToMany(mappedBy = "trip", cascade = CascadeType.ALL, orphanRemoval = true)
     @OrderBy("stopOrder ASC")
     private List<TripStopOrder> stops;
-
 }

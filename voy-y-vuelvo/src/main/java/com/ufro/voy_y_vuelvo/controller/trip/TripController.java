@@ -1,7 +1,9 @@
 package com.ufro.voy_y_vuelvo.controller.trip;
 
 import com.ufro.voy_y_vuelvo.dto.ApiResponse;
+import com.ufro.voy_y_vuelvo.dto.trip.CreateTripDto;
 import com.ufro.voy_y_vuelvo.dto.trip.TripSearchRequestDto;
+import com.ufro.voy_y_vuelvo.model.trips.Trip;
 import com.ufro.voy_y_vuelvo.service.trip.TripService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -36,6 +38,12 @@ public class TripController {
     public ResponseEntity<ApiResponse<?>> searchTrips(@RequestBody TripSearchRequestDto request) {
         ApiResponse<?> response = tripService.searchTripByFilters(request);
         return ResponseEntity.status(response.getStatus()).body(response);
+    }
+
+    @PostMapping("/create")
+    public ApiResponse<Trip> createTrip(@RequestHeader("Authorization") String token,
+                                        @RequestBody CreateTripDto tripRequest) {
+        return tripService.createTrip(token, tripRequest);
     }
 
 }
