@@ -79,7 +79,7 @@ export default {
 <style scoped>
 .registro-container {
   height: 100vh;
-  background-color: #acb4ec; /* Fondo extraído de la imagen */
+  background-color: #9698d6; /* Fondo extraído de la imagen */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -98,14 +98,14 @@ export default {
 }
 
 h2 {
-  color: #2c3e50;
+  color: black;
   margin-bottom: 1.5rem;
 }
 
 label {
   display: block;
   margin-bottom: 0.5rem;
-  color: #555;
+  color: black;
   font-weight: 500;
   font-size: 0.9rem;
   text-align: left;
@@ -119,16 +119,26 @@ input {
   border-radius: 8px;
   font-size: 0.9rem;
   transition: border 0.3s;
+  background-color: white; /* siempre blanco */
 }
 
 input:focus {
   outline: none;
-  border-color: #4e73df;
-  box-shadow: 0 0 0 2px rgba(78, 115, 223, 0.2);
+  border-color: #ddd;
+  box-shadow: none;
+  background-color: white;
+}
+
+/* Para inputs autocompletados */
+input:-webkit-autofill {
+  box-shadow: 0 0 0px 1000px white inset !important;
+  -webkit-box-shadow: 0 0 0px 1000px white inset !important;
+  background-color: white !important;
+  color: #000;
 }
 
 .register-btn {
-  background-color: #90caf9; /* Celeste pastel */
+  background-color: #9698d6; /* Celeste pastel */
   color: white;
   border: none;
   padding: 0.8rem;
@@ -142,6 +152,6 @@ input:focus {
 }
 
 .register-btn:hover {
-  background-color: #64b5f6;
+  background-color: white;
 }
 </style>
