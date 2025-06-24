@@ -10,4 +10,9 @@ class VoyYVuelvoApplicationTests {
 	void contextLoads() {
 	}
 
+	@Test
+	void testLoginUser_Success() {
+
+	}
+
 }

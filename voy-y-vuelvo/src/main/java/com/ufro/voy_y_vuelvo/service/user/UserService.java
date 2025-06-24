@@ -22,6 +22,10 @@ public class UserService {
     private final CustomerService customerService;
     private final PublisherService publisherService;
 
+    public User findById(Long id) {
+        return userRepository.findById(id).orElse(null);
+    }
+
     public ApiResponse<Object> getUserInfo(String token) {
 
         if (!jwtUtils.validateToken(token)) {
@@ -42,5 +46,18 @@ public class UserService {
             Publisher publisher = (Publisher) user;
             return new ApiResponse<>(200, "Datos de editor obtenidos correctamente", publisherService.toDto(publisher));
         }
+    }
+
+    public boolean isUserAuthenticatedAndValidRole(String token, Class<?> userType) {
+        if (!jwtUtils.validateToken(token)) {
+            return false;  // Token inválido
+        }
+        String email = jwtUtils.getEmailFromToken(token);
+        Optional<User> userOptional = userRepository.findByEmail(email);
+        if (userOptional.isEmpty()) {
+            return false;
+        }
+        User user = userOptional.get();
+        return userType.isInstance(user);
     }
 }

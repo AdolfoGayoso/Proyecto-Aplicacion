@@ -65,7 +65,7 @@ public class LoginService {
                 }
             }
 
-            loginResponse.setToken(jwtUtils.generateToken(user.get().getEmail(), user.get().getUserType()));
+            loginResponse.setToken(jwtUtils.generateToken(user.get().getEmail(), user.get().getUserType(), user.get().getId()));
             loginResponse.setEmail(user.get().getEmail());
             loginResponse.setUsername(user.get().getUserName());
             loginResponse.setUserType(user.get().getUserType());
