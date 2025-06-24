@@ -93,7 +93,6 @@ public class TripService {
 
         Trip trip = getTrip(tripRequest, publisher, tripStopOrders);
 
-        // Guardar el viaje en la base de datos
         tripRepository.save(trip);
 
         for (TripStopOrder stopOrder : tripStopOrders) {
@@ -106,14 +105,15 @@ public class TripService {
 
     private static Trip getTrip(CreateTripDto tripRequest, Publisher publisher, List<TripStopOrder> tripStopOrders) {
         Trip trip = new Trip();
-        trip.setActive(true);  // Activar por defecto el viaje
-        trip.setPublisher(publisher);  // Asociar al publisher logueado
+        trip.setActive(true);
+        trip.setPublisher(publisher);
         trip.setNumTotalSeats(tripRequest.getNumTotalSeats());
         trip.setPlateNumber(tripRequest.getPlateNumber());
         trip.setPrice(tripRequest.getPrice());
         trip.setDepartureDate(tripRequest.getDepartureDate());
         trip.setDepartureTime(tripRequest.getDepartureTime());
-        trip.setStops(tripStopOrders);  // Asociar las paradas
+        trip.setStops(tripStopOrders);
+        trip.setNumSeatsSold(0);
         return trip;
     }
 
