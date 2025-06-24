@@ -20,6 +20,8 @@ public class Trip {
     private Boolean active;
     private Integer numTotalSeats;
 
+    private Integer numSeatsSold;
+
     private String plateNumber;
     private Integer price;
     private LocalDate departureDate;
