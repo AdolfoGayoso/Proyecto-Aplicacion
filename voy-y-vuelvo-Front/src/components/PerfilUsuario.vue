@@ -1,8 +1,11 @@
 <template>
+  <router-link to="/" class="logo-link">
+    <img src="@/assets/logo.png" alt="Logo del Proyecto" class="corner-logo" />
+  </router-link>
+
   <div class="perfil-container" v-if="user">
     <button class="cerrar-btn" @click="cerrarSesion">Cerrar sesión</button>
 
-    <!-- Bienvenida encima del cuadro -->
     <p class="bienvenida">Bienvenid@, {{ user.userName || '' }}!</p>
 
     <div class="perfil-box">
@@ -42,6 +45,16 @@
 </template>
 
 <script>
+function tokenExpirado(token) {
+  try {
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    const ahora = Math.floor(Date.now() / 1000);
+    return payload.exp < ahora;
+  } catch {
+    return true;
+  }
+}
+
 export default {
   name: 'PerfilUsuario',
   data() {
@@ -55,25 +68,33 @@ export default {
   methods: {
     async obtenerDatosUsuario() {
       const token = localStorage.getItem('token');
-      if (!token) {
-        alert('No hay sesión activa.');
+
+      if (!token || tokenExpirado(token)) {
+        alert('Sesión expirada. Por favor, inicie sesión nuevamente.');
+        localStorage.removeItem('token');
         this.$router.push('/login');
         return;
       }
+
       try {
-        const response = await fetch('http://localhost:8080/api/auth/user-info', {
+        const response = await fetch('http://localhost:8080/api/user/info', {
           headers: {
             'Authorization': `Bearer ${token}`
           }
         });
+
         if (!response.ok) {
           throw new Error('Error al obtener los datos del usuario');
         }
+
         const data = await response.json();
-        this.user = data;
+        this.user = data.data;
         console.log('Datos del usuario:', this.user);
       } catch (error) {
         console.error('Error al obtener los datos del usuario:', error);
+        alert('No se pudo obtener la información del usuario.');
+        localStorage.removeItem('token');
+        this.$router.push('/login');
       }
     },
     cerrarSesion() {
@@ -133,10 +154,6 @@ export default {
   flex: 1;
 }
 
-.resumen {
-  background-color:#adb8f2 ;        
-}
-
 .tickets-btn {
   background-color:  #f0f2ff;
   border: none;
@@ -174,5 +191,18 @@ export default {
 
 .encabezado {
   font-weight: bold;
+}
+
+.logo-link {
+  position: fixed;
+  top: 15px;
+  left: 15px;
+  z-index: 1000;
+}
+
+.corner-logo {
+  width: 150px;
+  height: auto;
+  cursor: pointer;
 }
 </style>
