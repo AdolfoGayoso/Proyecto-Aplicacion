@@ -5,6 +5,7 @@ import RegistroForm from '../components/RegistroForm.vue'
 import PerfilUsuario from '../components/PerfilUsuario.vue'
 import PublisherDashboard from '../components/IndexPublisher.vue'
 import Resultados from '../components/Resultados.vue'
+import CompraView from '../components/CompraView.vue'
 
 const routes = [
   { path: '/', component: Buscador },
@@ -16,7 +17,8 @@ const routes = [
     path: '/publisher-dashboard',
     component: PublisherDashboard,
     meta: { requiresAuth: true, requiredRole: 'PUBLISHER' }
-  }
+  },
+  { path: '/compra', component: CompraView },
 ]
 
 const router = createRouter({

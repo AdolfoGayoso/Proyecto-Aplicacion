@@ -1,4 +1,7 @@
 <template>
+  <router-link to="/" class="logo-link">
+    <img src="@/assets/logo.png" alt="Logo del Proyecto" class="corner-logo" />
+  </router-link>
   <div class="resultados-container">
     <!-- Formulario para modificar búsqueda -->
     <div class="form-box">
@@ -48,7 +51,9 @@
           <td>{{ trip.departureTime }}</td>
           <td>Empresa X</td>
           <td>{{ trip.price || '$10000' }}</td>
-          <td><button class="comprar-btn">Comprar</button></td>
+          <td>
+            <button class="comprar-btn" @click="redirigirCompra(trip)">Comprar</button>
+          </td>
         </tr>
       </tbody>
     </table>
@@ -113,7 +118,20 @@ export default {
         console.error('Error en la petición:', error)
         alert('Ocurrió un error al buscar viajes: ' + error.message)
       }
-    }
+    },
+    redirigirCompra(trip) {
+      const stopIdFrom = trip.stops[0].stop.id
+      const stopIdTo = trip.stops[trip.stops.length - 1].stop.id
+
+      this.$router.push({
+        path: '/compra',
+        query: {
+          tripId: trip.id,
+          stopIdFrom,
+          stopIdTo
+       }
+     })
+    } 
   }
 }
 </script>
@@ -195,5 +213,18 @@ tbody td {
 }
 .comprar-btn:hover {
   background-color: #e0e2fa;
+}
+
+.logo-link {
+  position: fixed;
+  top: 15px;
+  left: 15px;
+  z-index: 1000;
+}
+
+.corner-logo {
+  width: 150px;
+  height: auto;
+  cursor: pointer;
 }
 </style>

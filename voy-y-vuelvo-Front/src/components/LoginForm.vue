@@ -1,13 +1,21 @@
 <template>
+  <router-link to="/" class="logo-link">
+    <img src="@/assets/logo.png" alt="Logo del Proyecto" class="corner-logo" />
+  </router-link>
+
   <div class="login-container">
     <div class="login-card">
       <h2>Inicio de sesión</h2>
 
-      <label for="email">Correo electrónico</label>
-      <input type="email" id="email" v-model="email" />
+      <div class="form-group">
+        <label for="email">Correo electrónico</label>
+        <input type="email" id="email" v-model="email" />
+      </div>
 
-      <label for="password">Contraseña</label>
-      <input type="password" id="password" v-model="password" />
+      <div class="form-group">
+        <label for="password">Contraseña</label>
+        <input type="password" id="password" v-model="password" />
+      </div>
 
       <button class="login-btn" @click="iniciarSesion">Ingresar</button>
 
@@ -23,11 +31,19 @@
 <script>
 export default {
   name: 'LoginForm',
-  
+
   data() {
     return {
       email: '',
       password: ''
+    }
+  },
+
+  created() {
+    const token = localStorage.getItem('token');
+    if (token) {
+      // Ya existe un token: redirige al perfil
+      this.$router.push('/perfil');
     }
   },
 
@@ -45,35 +61,27 @@ export default {
           })
         })
 
+        const result = await response.json();
+
         if (!response.ok) {
-          const errorBody = await response.json()
-          console.error('Error del servidor:', errorBody)
-          alert('Error al iniciar sesión: ' + (errorBody.message || 'desconocido'))
-          return
+          alert('Error al iniciar sesión: ' + (result.message || 'desconocido'));
+          return;
         }
 
-        const result = await response.json()
-        console.log('Respuesta del backend:', result)
-        
-        if (!result.data || !result.data.token || !result.data.userType) {
-          alert('Respuesta del servidor inesperada')
-          return
-        }
+        const { token, userType } = result.data;
 
-        const { token, userType } = result.data
-        
-        localStorage.setItem('token', token)
-        localStorage.setItem('userType', userType)
+        localStorage.setItem('token', token);
+        localStorage.setItem('userType', userType);
 
         if (userType === 'PUBLISHER') {
-          this.$router.push('/publisher-dashboard')
+          this.$router.push('/publisher-dashboard');
         } else {
-          this.$router.push('/perfil')
+          this.$router.push('/perfil');
         }
 
       } catch (error) {
-        console.error('Error en la petición:', error)
-        alert('Ocurrió un error al intentar iniciar sesión: ' + error.message)
+        console.error('Error en la petición:', error);
+        alert('Ocurrió un error al intentar iniciar sesión: ' + error.message);
       }
     }
   }
@@ -83,7 +91,7 @@ export default {
 <style scoped>
 .login-container {
   height: 100vh;
-  background-color: #9698d6; /* Fondo celeste pastel */
+  background-color: #9698d6;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -97,8 +105,16 @@ export default {
   padding: 2rem;
   border-radius: 12px;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-  width: 350px;
+  width: 100%;
+  max-width: 450px;
   text-align: center;
+  box-sizing: border-box;
+}
+
+.form-group {
+  text-align: left;
+  margin-bottom: 1.2rem;
+  box-sizing: border-box;
 }
 
 h2 {
@@ -112,28 +128,24 @@ label {
   color: black;
   font-weight: 500;
   font-size: 0.9rem;
-  text-align: left;
 }
 
 input {
   width: 100%;
   padding: 0.8rem;
-  margin-bottom: 1rem;
   border: 1px solid #ddd;
   border-radius: 8px;
   font-size: 0.9rem;
-  transition: border 0.3s;
-  background-color: white; /* siempre blanco */
+  background-color: white;
+  box-sizing: border-box;
 }
 
 input:focus {
   outline: none;
   border-color: #ddd;
   box-shadow: none;
-  background-color: white;
 }
 
-/* Para inputs autocompletados */
 input:-webkit-autofill {
   box-shadow: 0 0 0px 1000px white inset !important;
   -webkit-box-shadow: 0 0 0px 1000px white inset !important;
@@ -142,7 +154,7 @@ input:-webkit-autofill {
 }
 
 .login-btn {
-  background-color: #9698d6; /* Celeste pastel */
+  background-color: #9698d6;
   color: white;
   border: none;
   padding: 0.8rem;
@@ -155,9 +167,6 @@ input:-webkit-autofill {
   transition: background-color 0.3s;
 }
 
-.login-btn:hover {
-  background-color: #9698d6;
-}
 
 .forgot {
   display: block;
@@ -180,6 +189,8 @@ hr {
 p {
   font-size: 0.85rem;
   color: black;
+  margin: 0.5rem 0;
+  text-align: center;
 }
 
 .register-link {
@@ -191,5 +202,18 @@ p {
 
 .register-link:hover {
   text-decoration: underline;
+}
+
+.logo-link {
+  position: fixed;
+  top: 15px;
+  left: 15px;
+  z-index: 1000;
+}
+
+.corner-logo {
+  width: 150px;
+  height: auto;
+  cursor: pointer;
 }
 </style>
