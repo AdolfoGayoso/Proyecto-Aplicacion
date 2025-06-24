@@ -2,8 +2,6 @@
   <div class="container">
     <div class="logo">
       <img src="@/assets/logo.png" alt="Logo" />
-      <h1>Voy y Vuelvo</h1>
-      <p>Más nuevo que nunca</p>
     </div>
 
     <div class="form-box">
@@ -274,7 +272,7 @@ export default {
   gap: 20px;
 }
 .bottom-icons button {
-  background-color: white;
+  background-color: #E8E1F5;
   border: none;
   border-radius: 20px;
   padding: 10px 15px;
