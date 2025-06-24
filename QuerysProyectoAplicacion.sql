@@ -1,16 +1,6 @@
 drop database voyyvuelvov2;
 create database voyyvuelvov2;
 
-SELECT * FROM voyyvuelvov2.stop;
-SELECT * FROM voyyvuelvov2.trip;
-
-SELECT * FROM voyyvuelvov2.users;
-
-SELECT * FROM voyyvuelvov2.trip;
-SELECT * FROM voyyvuelvov2.stop;
-SELECT * FROM voyyvuelvov2.trip;
-SELECT * FROM voyyvuelvov2.trip_stop_order;
-
 INSERT INTO voyyvuelvov2.users (user_type,password, rut, user_name, email) VALUES
 ('PUBLISHER', '$2a$10$avYGFvGVuhn1uaek5.AXyOLuCJcRcW2Zcq283HYrqnIUOD0UNwkue', '11.111.111-1', 'nombrePublicador1', 'nombrePublicador1@voyyvuelvo.com'),
 ('PUBLISHER', '$2a$10$avYGFvGVuhn1uaek5.AXyOLuCJcRcW2Zcq283HYrqnIUOD0UNwkue', '11.111.111-2', 'nombrePublicador2', 'nombrePublicador2@voyyvuelvo.com'),
@@ -24,7 +14,8 @@ INSERT INTO voyyvuelvov2.users (user_type, email_verified, password, rut, user_n
 ('CUSTOMER', true, '$2a$10$avYGFvGVuhn1uaek5.AXyOLuCJcRcW2Zcq283HYrqnIUOD0UNwkue', '21.111.111-2', 'usuarioRegistrado2', 'usuario2@gmail.com', 0),
 ('CUSTOMER', true, '$2a$10$avYGFvGVuhn1uaek5.AXyOLuCJcRcW2Zcq283HYrqnIUOD0UNwkue', '21.111.111-3', 'usuarioRegistrado3', 'usuario3@gmail.com', 0),
 ('CUSTOMER', true, '$2a$10$avYGFvGVuhn1uaek5.AXyOLuCJcRcW2Zcq283HYrqnIUOD0UNwkue', '21.111.111-4', 'usuarioRegistrado4', 'usuario4@gmail.com', 0),
-('CUSTOMER', true, '$2a$10$avYGFvGVuhn1uaek5.AXyOLuCJcRcW2Zcq283HYrqnIUOD0UNwkue', '21.111.111-5', 'usuarioRegistrado5', 'usuario5@gmail.com', 0)
+('CUSTOMER', true, '$2a$10$avYGFvGVuhn1uaek5.AXyOLuCJcRcW2Zcq283HYrqnIUOD0UNwkue', '21.111.111-5', 'usuarioRegistrado5', 'usuario5@gmail.com', 0),
+('CUSTOMER', true, '$2a$10$avYGFvGVuhn1uaek5.AXyOLuCJcRcW2Zcq283HYrqnIUOD0UNwkue', '21.111.111-5', 'PruebaEnvioCorreo', 'a.gayoso02@ufromail.cl', 0)
 ;			 # contraseñapublisher
 
 INSERT INTO voyyvuelvov2.stop (id, name, latitude, longitude) VALUES

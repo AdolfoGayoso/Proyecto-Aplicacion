@@ -1,6 +1,7 @@
 package com.ufro.voy_y_vuelvo.repository;
 
 import com.ufro.voy_y_vuelvo.model.trips.Trip;
+import com.ufro.voy_y_vuelvo.model.users.Publisher;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -23,4 +24,5 @@ public interface TripRepository extends JpaRepository<Trip, Long> {
 """)
     List<Trip> findByFilters(String origin, String destination, LocalDate date, LocalTime departureTime);
 
+    List<Trip> findByPublisher(Publisher publisher);
 }
