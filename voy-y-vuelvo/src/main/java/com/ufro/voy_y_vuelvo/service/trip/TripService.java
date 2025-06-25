@@ -3,6 +3,7 @@ package com.ufro.voy_y_vuelvo.service.trip;
 import com.ufro.voy_y_vuelvo.config.JwtUtils;
 import com.ufro.voy_y_vuelvo.dto.ApiResponse;
 import com.ufro.voy_y_vuelvo.dto.trip.CreateTripDto;
+import com.ufro.voy_y_vuelvo.dto.trip.TripResponseDto;
 import com.ufro.voy_y_vuelvo.dto.trip.TripSearchRequestDto;
 import com.ufro.voy_y_vuelvo.model.trips.Trip;
 import com.ufro.voy_y_vuelvo.model.trips.TripStopOrder;
@@ -47,7 +48,7 @@ public class TripService {
         return tripStopOrderService.findAllStopsFromTripId(tripId);
     }
 
-    public ApiResponse<List<Trip>> searchTripByFilters(TripSearchRequestDto request) {
+    public ApiResponse<List<TripResponseDto>> searchTripByFilters(TripSearchRequestDto request) {
         List<Trip> trips = tripRepository.findByFilters(
                 request.getOrigin(),
                 request.getDestination(),
@@ -59,8 +60,13 @@ public class TripService {
             return new ApiResponse<>(HttpStatus.NOT_FOUND.value(), "No se encontraron viajes.", null);
         }
 
-        return new ApiResponse<>(HttpStatus.OK.value(), "Viajes encontrados", trips);
+        List<TripResponseDto> tripDtos = trips.stream()
+                .map(this::toDto)
+                .toList();
+
+        return new ApiResponse<>(HttpStatus.OK.value(), "Viajes encontrados", tripDtos);
     }
+
 
     public ApiResponse<Trip> createTrip(String token, CreateTripDto tripRequest) {
 
@@ -116,6 +122,19 @@ public class TripService {
         trip.setNumSeatsSold(0);
         return trip;
     }
-
+    public TripResponseDto toDto(Trip trip) {
+        TripResponseDto dto = new TripResponseDto();
+        dto.setId(trip.getId());
+        dto.setActive(trip.getActive()); // ← cambiado
+        dto.setNumTotalSeats(trip.getNumTotalSeats());
+        dto.setNumSeatsSold(trip.getNumSeatsSold());
+        dto.setPlateNumber(trip.getPlateNumber());
+        dto.setPrice(trip.getPrice());
+        dto.setDepartureDate(trip.getDepartureDate());
+        dto.setDepartureTime(trip.getDepartureTime());
+        dto.setStops(trip.getStops());
+        dto.setPublisherName(trip.getPublisher().getUserName()); // ← corregido
+        return dto;
+    }
 
 }

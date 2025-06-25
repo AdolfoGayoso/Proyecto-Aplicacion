@@ -4,9 +4,7 @@
       <img src="@/assets/logo.png" alt="Logo del Proyecto" class="corner-logo" />
     </router-link>
 
-    <!-- Formulario para modificar búsqueda -->
     <div class="form-box">
-      <!-- Origen -->
       <div class="input-group">
         <label>Origen</label>
         <div class="input-icon">
@@ -20,7 +18,6 @@
         </ul>
       </div>
 
-      <!-- Destino -->
       <div class="input-group">
         <label>Destino</label>
         <div class="input-icon">
@@ -34,7 +31,6 @@
         </ul>
       </div>
 
-      <!-- Fecha -->
       <div class="input-group">
         <label>Fecha</label>
         <div class="input-icon">
@@ -43,7 +39,6 @@
         </div>
       </div>
 
-      <!-- Hora -->
       <div class="input-group">
         <label>Hora</label>
         <div class="input-icon">
@@ -55,27 +50,42 @@
       <button class="search-btn" @click="buscarViajes">Editar búsqueda</button>
     </div>
 
-    <!-- Tabla de resultados -->
     <h2><span class="material-icons">search</span> Resultados de su búsqueda</h2>
     <p class="info-text">{{ results.length }} resultados encontrados</p>
     <table>
       <thead>
         <tr>
-          <th>Origen - Destino</th>
+          <th>Trayecto</th>
           <th>Hora</th>
           <th>Empresa</th>
           <th>Precio</th>
-          <th>Acción</th>
+          <th style="text-align: right;">Disponibilidad</th>
         </tr>
       </thead>
       <tbody>
         <tr v-for="(trip, index) in results" :key="index">
-          <td>{{ trip.stops[0].stop.name }} → {{ trip.stops[trip.stops.length - 1].stop.name }}</td>
-          <td>{{ trip.departureTime }}</td>
-          <td>Empresa X</td>
-          <td>{{ trip.price || '$10000' }}</td>
           <td>
-            <button class="comprar-btn" @click="redirigirCompra(trip)">Comprar</button>
+            <span v-for="(parada, i) in trip.stops" :key="i">
+              <span :style="{
+                fontWeight: parada.stop.name === origin || parada.stop.name === destination ? 'bold' : 'normal',
+                color: parada.stop.name === origin || parada.stop.name === destination ? '#5c66b6' : 'black'
+              }">
+                {{ parada.stop.name }}
+              </span>
+              <span v-if="i < trip.stops.length - 1"> → </span>
+            </span>
+          </td>
+          <td>{{ trip.departureTime }}</td>
+          <td>{{ trip.publisherName || 'Empresa X' }}</td>
+          <td>{{ trip.price ? `$${trip.price}` : '$10.000' }}</td>
+          <td style="text-align: right; white-space: nowrap;">
+            <template v-if="calcularDisponibilidad(trip) > 0">
+              {{ calcularDisponibilidad(trip) }} asiento(s)
+              <button class="comprar-btn" style="margin-left: 12px; vertical-align: middle;" @click="redirigirCompra(trip)">Comprar</button>
+            </template>
+            <template v-else>
+              <span style="color: red; font-weight: bold;">Agotado</span>
+            </template>
           </td>
         </tr>
       </tbody>
@@ -178,10 +188,22 @@ export default {
           stopIdTo
         }
       })
+    },
+    calcularDisponibilidad(trip) {
+      const origenIndex = trip.stops.findIndex(p => p.stop.name === this.origin)
+      const destinoIndex = trip.stops.findIndex(p => p.stop.name === this.destination)
+
+      if (origenIndex === -1 || destinoIndex === -1 || origenIndex >= destinoIndex) {
+        return 0
+      }
+
+      const tramo = trip.stops.slice(origenIndex, destinoIndex)
+      return Math.min(...tramo.map(p => p.availableSeats))
     }
   }
 }
 </script>
+
 
 <style scoped>
 .container {
