@@ -1,4 +1,4 @@
-package com.ufro.voy_y_vuelvo.controller;
+package com.ufro.voy_y_vuelvo.controller.atuhentication;
 
 import com.ufro.voy_y_vuelvo.dto.ApiResponse;
 import com.ufro.voy_y_vuelvo.dto.authetication.register.CustomerRegisterRequest;

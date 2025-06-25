@@ -1,5 +1,8 @@
 package com.ufro.voy_y_vuelvo.model.tickets;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.ufro.voy_y_vuelvo.model.purchases.Purchase;
+import com.ufro.voy_y_vuelvo.model.trips.Trip;
 import com.ufro.voy_y_vuelvo.model.users.Customer;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -15,12 +18,27 @@ public class SupportTicket {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String issue;
-    private String description;
-    private LocalDateTime createdAt = LocalDateTime.now();
-    private String status = SupportTicketStatus.OPEN.toString();
+    @ManyToOne
+    @JoinColumn(name = "purchase_id")
+    @JsonIgnore
+    private Purchase purchase;
 
     @ManyToOne
-    @JoinColumn(name = "user_customer_id")
-    private Customer createdBy;
+    @JoinColumn(name = "customer_id", nullable = false)
+    @JsonIgnore
+    private Customer customer;
+
+    @ManyToOne
+    @JoinColumn(name = "trip_id", nullable = false)
+    @JsonIgnore
+    private Trip trip;
+
+    private String title;
+
+    private String description;
+
+    @Enumerated(EnumType.STRING)
+    private SupportTicketStatus status = SupportTicketStatus.OPEN;
+
+    private LocalDateTime createdAt = LocalDateTime.now();
 }

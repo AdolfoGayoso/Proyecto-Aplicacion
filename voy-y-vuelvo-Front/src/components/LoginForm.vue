@@ -1,30 +1,46 @@
 <template>
+  <router-link to="/" class="logo-link">
+    <img src="@/assets/logo.png" alt="Logo del Proyecto" class="corner-logo" />
+  </router-link>
+
   <div class="login-container">
-    <h2>Inicio de sesión</h2>
-    <label>Correo electrónico</label>
-<input type="email" v-model="email" />
+    <div class="login-card">
+      <h2>Inicio de sesión</h2>
 
-<label>Contraseña</label>
-<input type="password" v-model="password" />
+      <div class="form-group">
+        <label for="email">Correo electrónico</label>
+        <input type="email" id="email" v-model="email" />
+      </div>
 
-<button class="login-button" @click="iniciarSesion">Ingresar</button>
+      <div class="form-group">
+        <label for="password">Contraseña</label>
+        <input type="password" id="password" v-model="password" />
+      </div>
 
-<a href="#" class="forgot">¿Olvidó su contraseña?</a>
+      <button class="login-btn" @click="iniciarSesion">Ingresar</button>
 
-<hr />
-<p>o</p>
-<router-link to="/registro">Regístrese aquí</router-link>
-
+      <hr />
+      <p>o</p>
+      <router-link to="/registro" class="register-link">Regístrese aquí</router-link>
+    </div>
   </div>
-</template> 
+</template>
+
 <script>
 export default {
   name: 'LoginForm',
-  
+
   data() {
     return {
       email: '',
       password: ''
+    }
+  },
+
+  created() {
+    const token = localStorage.getItem('token');
+    if (token) {
+      this.$router.push('/perfil');
     }
   },
 
@@ -42,85 +58,146 @@ export default {
           })
         })
 
+        const result = await response.json();
+
         if (!response.ok) {
-          const errorBody = await response.json()
-          console.error('Error del servidor:', errorBody)
-          alert('Error al iniciar sesión: ' + (errorBody.message || 'desconocido'))
-          return
+          alert('Error al iniciar sesión: ' + (result.message || 'desconocido'));
+          return;
         }
 
-        const result = await response.json()
-        console.log('Respuesta del backend:', result)
-        
-         // Verificar si la respuesta tiene la estructura esperada
-        if (!result.data || !result.data.token || !result.data.userType) {
-          alert('Respuesta del servidor inesperada')
-          return
-        }
+        const { token, userType } = result.data;
 
-        const { token, userType } = result.data
-        
-        // Guardar el token y el tipo de usuario en localStorage
-        localStorage.setItem('token', token)
-        localStorage.setItem('userType', userType)
+        localStorage.setItem('token', token);
+        localStorage.setItem('userType', userType);
 
-        // Redirigir según el tipo de usuario
         if (userType === 'PUBLISHER') {
-          this.$router.push('/publisher-dashboard')
+          this.$router.push('/publisher-dashboard');
         } else {
-          this.$router.push('/perfil')
+          this.$router.push('/perfil');
         }
 
       } catch (error) {
-        console.error('Error en la petición:', error)
-        alert('Ocurrió un error al intentar iniciar sesión: ' + error.message)
+        console.error('Error en la petición:', error);
+        alert('Ocurrió un error al intentar iniciar sesión: ' + error.message);
       }
     }
   }
 }
 </script>
 
-
-<style scoped> 
+<style scoped>
 .login-container {
-  width: 300px; 
-  margin: 100px auto; 
-  background-color: #aab4f3; 
-  padding: 20px; 
-  border-radius: 10px; 
-  text-align: center; 
-  border: 2px solid #6c7cc6; 
-} 
+  height: 100vh;
+  background-color: #9698d6;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Arial', sans-serif;
+  margin: 0;
+  padding: 0;
+}
 
-input { 
-  display: block; 
-  width: 90%; 
-  margin: 10px auto; 
-  padding: 8px; 
-  border-radius: 6px; 
-  border: 1px solid #888; 
-} 
+.login-card {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 450px;
+  text-align: center;
+  box-sizing: border-box;
+}
 
+.form-group {
+  text-align: left;
+  margin-bottom: 1.2rem;
+  box-sizing: border-box;
+}
 
-.login-button { 
-   background-color: #5cd4e6; 
-   padding: 8px 20px; 
-   border: none; 
-   border-radius: 6px; 
-   margin-top: 10px; 
-   cursor: pointer; 
-} 
-    
-.forgot { 
-  display: block; 
-  margin: 10px 0; 
-   font-size: 13px; 
-  color: #333; 
-} 
-      
-.register { 
-  color: blue; 
-  text-decoration: none; 
-  font-size: 14px; 
-} 
+h2 {
+  color: black;
+  margin-bottom: 1.5rem;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: black;
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+input {
+  width: 100%;
+  padding: 0.8rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  background-color: white;
+  box-sizing: border-box;
+}
+
+input:focus {
+  outline: none;
+  border-color: #ddd;
+  box-shadow: none;
+}
+
+input:-webkit-autofill {
+  box-shadow: 0 0 0px 1000px white inset !important;
+  -webkit-box-shadow: 0 0 0px 1000px white inset !important;
+  background-color: white !important;
+  color: #000;
+}
+
+.login-btn {
+  background-color: #9698d6;
+  color: white;
+  border: none;
+  padding: 0.8rem;
+  width: 100%;
+  border-radius: 8px;
+  margin-top: 1rem;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: background-color 0.3s;
+}
+
+hr {
+  margin: 15px 0;
+  border: none;
+  border-top: 1px solid #ccc;
+}
+
+p {
+  font-size: 0.85rem;
+  color: black;
+  margin: 0.5rem 0;
+  text-align: center;
+}
+
+.register-link {
+  color: #9698d6;
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.register-link:hover {
+  text-decoration: underline;
+}
+
+.logo-link {
+  position: fixed;
+  top: 15px;
+  left: 15px;
+  z-index: 1000;
+}
+
+.corner-logo {
+  width: 150px;
+  height: auto;
+  cursor: pointer;
+}
 </style>

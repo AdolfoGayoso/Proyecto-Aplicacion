@@ -23,7 +23,4 @@ public class Customer extends User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Purchase> purchases = new ArrayList<>();
 
-    @OneToMany(mappedBy = "createdBy", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<SupportTicket> supportTickets = new ArrayList<>();
-
 }

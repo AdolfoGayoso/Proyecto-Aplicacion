@@ -24,7 +24,6 @@ public class LoginService {
     public ApiResponse<LoginResponse> loginUser(LoginRequest loginRequest) {
         LoginResponse loginResponse = new LoginResponse();
         Optional<User> user = userRepository.findByEmail(loginRequest.getEmail());
-        System.out.println("Intentando login con email: " + loginRequest.getEmail());
 
         if (user.isEmpty()) {
             loginResponse.setToken(null);
@@ -66,9 +65,9 @@ public class LoginService {
                 }
             }
 
-            loginResponse.setToken(jwtUtils.generateToken(user.get().getEmail(), user.get().getUserType()));
+            loginResponse.setToken(jwtUtils.generateToken(user.get().getEmail(), user.get().getUserType(), user.get().getId()));
             loginResponse.setEmail(user.get().getEmail());
-            loginResponse.setUsername(user.get().getEmail());
+            loginResponse.setUsername(user.get().getUserName());
             loginResponse.setUserType(user.get().getUserType());
             return new ApiResponse<>(
                     200,

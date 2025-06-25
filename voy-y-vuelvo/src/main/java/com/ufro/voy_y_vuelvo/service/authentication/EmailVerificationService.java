@@ -5,7 +5,6 @@ import com.ufro.voy_y_vuelvo.dto.ApiResponse;
 import com.ufro.voy_y_vuelvo.dto.authetication.register.EmailValidationResponse;
 import com.ufro.voy_y_vuelvo.model.users.Customer;
 import com.ufro.voy_y_vuelvo.repository.CustomerRepository;
-import com.ufro.voy_y_vuelvo.service.CustomerService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.SimpleMailMessage;
@@ -19,7 +18,6 @@ import java.util.Optional;
 public class EmailVerificationService {
     private final JavaMailSender mailSender;
     private final CustomerRepository customerRepository;
-    private final CustomerService customerService;
 
     public void sendVerificationEmail(String sendTo, String emailVerificationCode) {
         SimpleMailMessage message = new SimpleMailMessage();
@@ -42,20 +40,33 @@ public class EmailVerificationService {
         Optional<Customer> customer = customerRepository.findByEmailVerificationCode(emailVerificationCode);
 
         if (customer.isPresent()) {
+
             Customer customerToValidate = customer.get();
-            customerToValidate.setEmailVerified(Boolean.TRUE);
-            customerToValidate.setEmailVerificationCode(null);
 
-            customerRepository.save(customerToValidate);
+            if (!customer.get().getEmailVerified()) {
+                customerToValidate.setEmailVerified(Boolean.TRUE);
+                customerToValidate.setEmailVerificationCode(emailVerificationCode);
 
-            response.setEmailToValidate(customerToValidate.getEmail());
-            response.setSuccess(Boolean.TRUE);
+                customerRepository.save(customerToValidate);
 
-            return new ApiResponse<>(
-                    200,
-                    "Email validado con exito.",
-                    response
-            );
+                response.setEmailToValidate(customerToValidate.getEmail());
+                response.setSuccess(Boolean.TRUE);
+
+                return new ApiResponse<>(
+                        200,
+                        "Email validado con exito.",
+                        response
+                );
+            } else {
+                response.setEmailToValidate(customerToValidate.getEmail());
+                response.setSuccess(Boolean.TRUE);
+
+                return new ApiResponse<>(
+                        204,
+                        "Usuario ya ha verificado su email",
+                        response
+                );
+            }
         }
         response.setSuccess(Boolean.FALSE);
         response.setEmailToValidate(null);
