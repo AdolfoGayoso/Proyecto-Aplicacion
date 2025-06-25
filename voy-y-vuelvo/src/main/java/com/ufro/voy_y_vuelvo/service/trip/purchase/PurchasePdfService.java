@@ -1,9 +1,20 @@
 package com.ufro.voy_y_vuelvo.service.trip.purchase;
 
+import com.itextpdf.barcodes.BarcodeQRCode;
+import com.itextpdf.kernel.colors.Color;
+import com.itextpdf.kernel.colors.ColorConstants;
+import com.itextpdf.kernel.font.PdfFont;
+import com.itextpdf.kernel.font.PdfFontFactory;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.kernel.pdf.xobject.PdfFormXObject;
 import com.itextpdf.layout.Document;
+import com.itextpdf.layout.element.Cell;
+import com.itextpdf.layout.element.Image;
 import com.itextpdf.layout.element.Paragraph;
+import com.itextpdf.layout.element.Table;
+import com.itextpdf.layout.properties.HorizontalAlignment;
+import com.itextpdf.layout.properties.TextAlignment;
 import com.ufro.voy_y_vuelvo.model.purchases.Purchase;
 import com.ufro.voy_y_vuelvo.model.trips.Stop;
 import com.ufro.voy_y_vuelvo.model.trips.Trip;
@@ -52,13 +63,113 @@ public class PurchasePdfService {
         PdfDocument pdf = new PdfDocument(writer);
         Document document = new Document(pdf);
 
+        // Variables pdf
+
+        String subida = stopFrom.getName();
+        String bajada = stopTo.getName();
+        String horaDeSalida = trip.getDepartureTime().toString();
+        String fechaViaje = trip.getDepartureDate().toString();
+        String patente = trip.getPlateNumber();
+        String rut = purchase.getRut();
+        String precio = trip.getPrice().toString();
+        String codigoReserva = uuid;
+
+
         // Añadir información al PDF
-        document.add(new Paragraph("Información de la compra"));
-        document.add(new Paragraph("Subida: " + stopFrom.getName()));
-        document.add(new Paragraph("Bajada: " + stopTo.getName()));
-        document.add(new Paragraph("Hora de salida: " + trip.getDepartureTime()));
-        document.add(new Paragraph("Patente bus: " + trip.getPlateNumber()));
-        document.add(new Paragraph("Rut pasajero: " + purchase.getRut()));
+        PdfFont fontBold = PdfFontFactory.createFont(com.itextpdf.io.font.constants.StandardFonts.HELVETICA_BOLD);
+        PdfFont fontNormal = PdfFontFactory.createFont(com.itextpdf.io.font.constants.StandardFonts.HELVETICA);
+
+        // Encabezado
+        Paragraph header = new Paragraph("PASAJE VOY Y VUELVO")
+                .setFont(fontBold)
+                .setFontSize(18)
+                .setFontColor(ColorConstants.BLACK)
+                .setTextAlignment(TextAlignment.CENTER)
+                .setMarginBottom(20);
+        document.add(header);
+
+        // Código de reserva
+        Paragraph codigo = new Paragraph("Código: " + codigoReserva)
+                .setFont(fontBold)
+                .setFontSize(12)
+                .setTextAlignment(TextAlignment.CENTER)
+                .setMarginBottom(15);
+        document.add(codigo);
+
+        // Tabla con información principal
+        float[] columnWidths = {150f, 200f};
+        Table table = new Table(columnWidths);
+        table.setMarginBottom(20);
+
+        // Estilo de celda
+        Color lightGray = ColorConstants.LIGHT_GRAY;
+        Cell cellStyleKey = new Cell().setFont(fontBold).setBackgroundColor(lightGray).setPadding(5);
+        Cell cellStyleValue = new Cell().setFont(fontNormal).setPadding(5);
+
+        // Llenar tabla
+
+        table.addCell(cellStyleKey.clone(true).add(new Paragraph("RUT")));
+        table.addCell(cellStyleValue.clone(true).add(new Paragraph(rut)));
+
+        table.addCell(cellStyleKey.clone(true).add(new Paragraph("Fecha de Viaje")));
+        table.addCell(cellStyleValue.clone(true).add(new Paragraph(fechaViaje)));
+
+        table.addCell(cellStyleKey.clone(true).add(new Paragraph("Hora de Salida")));
+        table.addCell(cellStyleValue.clone(true).add(new Paragraph(horaDeSalida)));
+
+        table.addCell(cellStyleKey.clone(true).add(new Paragraph("Subida")));
+        table.addCell(cellStyleValue.clone(true).add(new Paragraph(subida)));
+
+        table.addCell(cellStyleKey.clone(true).add(new Paragraph("Bajada")));
+        table.addCell(cellStyleValue.clone(true).add(new Paragraph(bajada)));
+
+        table.addCell(cellStyleKey.clone(true).add(new Paragraph("Patente Bus")));
+        table.addCell(cellStyleValue.clone(true).add(new Paragraph(patente)));
+
+        table.addCell(cellStyleKey.clone(true).add(new Paragraph("Precio")));
+        table.addCell(cellStyleValue.clone(true).add(new Paragraph("$" + precio)));
+
+        document.add(table);
+
+        // Notas importantes
+        Paragraph notas = new Paragraph("NOTAS IMPORTANTES:")
+                .setFont(fontBold)
+                .setMarginTop(20)
+                .setMarginBottom(5);
+        document.add(notas);
+
+        Paragraph nota1 = new Paragraph("• Presentar este documento y cédula de identidad al abordar.")
+                .setFont(fontNormal)
+                .setMarginBottom(3);
+        Paragraph nota2 = new Paragraph("• Llegar al menos 15 minutos antes de la salida.")
+                .setFont(fontNormal)
+                .setMarginBottom(3);
+
+        document.add(nota1);
+        document.add(nota2);
+
+        // Agregar código QR con el UUID
+        Paragraph qrTitle = new Paragraph("Presentar QR a la subida del bus:")
+                .setFont(fontBold)
+                .setTextAlignment(TextAlignment.CENTER)
+                .setMarginTop(20)
+                .setMarginBottom(10);
+        document.add(qrTitle);
+
+        // Crear código QR
+        BarcodeQRCode qrCode = new BarcodeQRCode(uuid);
+        PdfFormXObject qrCodeObject = qrCode.createFormXObject(ColorConstants.BLACK, pdf);
+        Image qrCodeImage = new Image(qrCodeObject).setWidth(100).setHeight(100).setHorizontalAlignment(HorizontalAlignment.CENTER);
+        document.add(qrCodeImage);
+
+        // Pie de página
+        Paragraph qr = new Paragraph("Gracias por preferirnos • www.voyyvuelvo.cl")
+                .setFont(fontNormal)
+                .setFontSize(10)
+                .setFontColor(ColorConstants.GRAY)
+                .setTextAlignment(TextAlignment.CENTER)
+                .setMarginTop(20);
+        document.add(qr);
 
         // Cerrar el documento
         document.close();

@@ -45,6 +45,11 @@ public class TripController {
                                         @RequestBody CreateTripDto tripRequest) {
         return tripService.createTrip(token, tripRequest);
     }
+
+    @PutMapping("/delete-trip-by-id-{tripId}")
+    public ApiResponse<String> deleteTrip(@RequestHeader("Authorization") String token, @PathVariable Long tripId) {
+        return tripService.deleteTrip(token, tripId);
+    }
   
 }
  
