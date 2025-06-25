@@ -18,6 +18,7 @@ public class CustomerService {
         userDto.setUserName(customer.getUserName());
         userDto.setEmail(customer.getEmail());
         userDto.setUserType(customer.getUserType());
+        userDto.setRut(customer.getRut());
         return userDto;
     }
 }
