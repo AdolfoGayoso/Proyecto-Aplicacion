@@ -19,6 +19,8 @@ const routes = [
     meta: { requiresAuth: true, requiredRole: 'PUBLISHER' }
   },
   { path: '/compra', component: CompraView },
+
+  { path: '/crear-ticket/:id', component: () => import('../components/CrearTicket.vue') }
 ]
 
 const router = createRouter({

@@ -25,22 +25,28 @@
     </div>
 
     <div class="historial">
-      <h2>Historial de viajes</h2>
-      <div class="tabla">
-        <div class="fila encabezado">
-          <span>Origen - Destino</span>
-          <span>Fecha</span>
-          <span>Empresa</span>
-          <span>Precio</span>
-        </div>
-        <div class="fila" v-for="n in 5" :key="n">
-          <span>Origen - Destino</span>
-          <span>Fecha</span>
-          <span>Empresa</span>
-          <span>Precio</span>
-        </div>
-      </div>
+  <h3>Historial de viajes</h3>
+  <div class="tabla">
+    <div class="fila titulo">
+      <span>Origen - Destino</span>
+      <span>Fecha</span>
+      <span>Empresa</span>
+      <span>Precio</span>
+      <span>Tickets</span>
     </div>
+
+    <div class="fila" v-for="n in 5" :key="n">
+      <span>Origen - Destino</span>
+      <span>Fecha</span>
+      <span>Empresa</span>
+      <span>Precio</span>
+      <router-link :to="`/crear-ticket/${n}`" class="crear-ticket-btn">
+        Crear Ticket
+      </router-link>
+    </div>
+  </div>
+</div>
+
   </div>
 </template>
 
@@ -205,4 +211,40 @@ export default {
   height: auto;
   cursor: pointer;
 }
+
+.crear-ticket-btn {
+  background-color: #7986cb;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
+.crear-ticket-btn:hover {
+  background-color: #5c6bc0;
+}
+
+.fila span {
+  flex: 1;
+  text-align: center;
+}
+
+.fila {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr 1fr 1fr;
+  align-items: center;
+  background-color: white;
+  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 15px;
+  gap: 10px;
+  text-align: center;
+}
+
+.fila.titulo {
+  font-weight: bold;
+  background-color: white;
+}
+
 </style>
