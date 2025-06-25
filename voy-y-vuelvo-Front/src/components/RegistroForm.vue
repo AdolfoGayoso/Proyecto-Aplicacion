@@ -8,7 +8,7 @@
 
       <div class="form-group">
         <label for="rut">RUT</label>
-        <input type="text" id="rut" v-model="rut" />
+        <input type="text" id="rut" v-model="rut" @input="formatearRut" placeholder="Ej: 12.345.678-9" />
       </div>
 
       <div class="form-group">
@@ -51,6 +51,21 @@ export default {
     };
   },
   methods: {
+    formatearRut() {
+      let valor = this.rut.replace(/[^0-9kK]/g, '').toUpperCase();
+      if (valor.length > 9) valor = valor.slice(0, 9);
+
+      const cuerpo = valor.slice(0, -1);
+      const verificador = valor.slice(-1);
+      const cuerpoConPuntos = cuerpo.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+
+      if (cuerpo && verificador) {
+        this.rut = `${cuerpoConPuntos}-${verificador}`;
+      } else {
+        this.rut = valor;
+      }
+    },
+
     async registrarse() {
       if (this.password !== this.confirmPassword) {
         alert("Las contraseñas no coinciden");
@@ -77,7 +92,7 @@ export default {
         console.log("Respuesta del backend:", data);
 
         if (response.ok) {
-          alert("¡Registro exitoso!");
+          alert("¡Registro exitoso! Valida tu correo para iniciar sesión de forma correcta.");
           this.$router.push('/login');
         } else {
           alert("Error en el registro: " + (data.message || "Error desconocido"));
@@ -88,7 +103,7 @@ export default {
       }
     }
   }
-}
+};
 </script>
 
 <style scoped>
@@ -113,7 +128,6 @@ export default {
   text-align: center;
   box-sizing: border-box;
 }
-
 
 h2 {
   color: black;
@@ -200,4 +214,3 @@ input:-webkit-autofill {
   cursor: pointer;
 }
 </style>
-
