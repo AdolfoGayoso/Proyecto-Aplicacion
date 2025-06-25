@@ -57,8 +57,8 @@ public class PurchasePdfService {
         document.add(new Paragraph("Subida: " + stopFrom.getName()));
         document.add(new Paragraph("Bajada: " + stopTo.getName()));
         document.add(new Paragraph("Hora de salida: " + trip.getDepartureTime()));
-        document.add(new Paragraph("Patente: " + trip.getPlateNumber()));
-        document.add(new Paragraph("Pasajero: " + purchase.getRut()));
+        document.add(new Paragraph("Patente bus: " + trip.getPlateNumber()));
+        document.add(new Paragraph("Rut pasajero: " + purchase.getRut()));
 
         // Cerrar el documento
         document.close();

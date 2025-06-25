@@ -61,7 +61,7 @@
       </label>
     </div>
 
-    <button class="btn-pagar" @click="enviarCompra" :disabled="!aceptaTerminos">PAGAR</button>
+    <button class="btn-pagar" @click="enviarCompra" :disabled="!aceptaTerminos || botonBloqueado">PAGAR</button>
 
     <div v-if="mostrarModal" class="modal">
       <div class="modal-contenido">
@@ -97,7 +97,8 @@ export default {
       userEmail: '',
       userRut: '',
       userName: '',
-      mostrarModal: false
+      mostrarModal: false,
+      botonBloqueado: false,
     };
   },
   computed: {
@@ -158,41 +159,83 @@ export default {
       return `${cuerpoConPuntos}-${verificador}`;
     },
     async enviarCompra() {
-      if (!this.isLoggedIn && this.formData.email !== this.formData.confirmEmail) {
-        alert('Los correos electrónicos no coinciden.');
-        return;
+  if (!this.metodoPago) {
+    alert('Debe seleccionar un método de pago.');
+    return;
+  }
+
+  if (!this.isLoggedIn && this.formData.email !== this.formData.confirmEmail) {
+    alert('Los correos electrónicos no coinciden.');
+    return;
+  }
+
+  const token = localStorage.getItem('token');
+  const payload = {
+    tripId: this.tripId,
+    stopIdFrom: this.stopIdFrom,
+    stopIdTo: this.stopIdTo,
+    rut: this.isLoggedIn ? null : this.formData.rut,
+    email: this.isLoggedIn ? null : this.formData.email
+  };
+
+  this.botonBloqueado = true;
+
+  try {
+    const res = await fetch('http://localhost:8080/api/purchase/buy', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        ...(token ? { Authorization: `Bearer ${token}` } : {})
+      },
+      body: JSON.stringify(payload)
+    });
+
+    if (!res.ok) {
+      const err = await res.json();
+      alert('Error en la compra: ' + (err.message || 'desconocido'));
+      this.botonBloqueado = false;
+      return;
+    }
+
+    const responseJson = await res.json();
+console.log('Respuesta completa:', responseJson);
+
+const uuid = responseJson?.data?.uuid;
+
+if (!uuid) {
+  alert('No se recibió UUID del backend.');
+  this.botonBloqueado = false;
+  return;
+}
+
+
+    if (!uuid) {
+      alert('No se recibió UUID del backend.');
+      this.botonBloqueado = false;
+      return;
+    }
+
+    // Llamar al endpoint para enviar el PDF
+    const pdfRes = await fetch(`http://localhost:8080/api/purchase/send-pdf?uuid=${uuid}`, {
+      method: 'GET',
+      headers: {
+        ...(token ? { Authorization: `Bearer ${token}` } : {})
       }
+    });
 
-      const token = localStorage.getItem('token');
-      const payload = {
-        tripId: this.tripId,
-        stopIdFrom: this.stopIdFrom,
-        stopIdTo: this.stopIdTo,
-        rut: this.isLoggedIn ? null : this.formData.rut,
-        email: this.isLoggedIn ? null : this.formData.email
-      };
+    if (!pdfRes.ok) {
+      alert('Compra realizada, pero hubo un problema al enviar el pasaje al correo.');
+    } else {
+      alert('¡Compra exitosa! El pasaje ha sido enviado al correo.');
+    }
 
-      try {
-        const res = await fetch('http://localhost:8080/api/ticket/purchase', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            ...(token ? { Authorization: `Bearer ${token}` } : {})
-          },
-          body: JSON.stringify(payload)
-        });
-
-        if (!res.ok) {
-          const err = await res.json();
-          alert('Error en la compra: ' + (err.message || 'desconocido'));
-        } else {
-          alert('Compra realizada con éxito');
-          this.$router.push('/confirmacion');
-        }
-      } catch (err) {
-        alert('Error al conectar con el servidor: ' + err.message);
-      }
-    },
+    this.$router.push('/');
+  } catch (err) {
+    alert('Error al conectar con el servidor: ' + err.message);
+  } finally {
+    this.botonBloqueado = false;
+  }
+},
     parseJwt(token) {
       try {
         return JSON.parse(atob(token.split('.')[1]));
