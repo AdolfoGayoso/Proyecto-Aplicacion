@@ -33,8 +33,9 @@
             <td>{{ formatDate(trip.date) }}</td>
             <td>${{ trip.price }}</td>
             <td>
-              <button @click="editTrip(trip.id)" class="action-btn">✏️</button>
-              <button @click="deleteTrip(trip.id)" class="action-btn">🗑️</button>
+              <button @click="editTrip(trip.id)" class="action-btn material-icons">edit</button>
+              <button @click="deleteTrip(trip.id)" class="action-btn material-icons">delete</button>
+              <button @click="verTickets(trip.id)" class="action-btn material-icons">confirmation_number</button>
             </td>
           </tr>
         </tbody>
@@ -84,19 +85,18 @@ export default {
       return new Date(dateString).toLocaleDateString('es-CL', options)
     },
     createNewTrip() {
-      // Lógica para crear nuevo viaje
       this.$router.push('/crear-viaje')
     },
     editTrip(id) {
-      // Lógica para editar viaje
       console.log('Editar viaje:', id)
     },
     deleteTrip(id) {
-      // Lógica para eliminar viaje
       console.log('Eliminar viaje:', id)
     },
+    verTickets(tripId) {
+      this.$router.push({ path: '/tickets-publisher', query: { tripId } })
+    },
     logout() {
-      // Lógica para cerrar sesión
       localStorage.removeItem('token')
       this.$router.push('/login')
     }
@@ -104,8 +104,10 @@ export default {
 }
 </script>
 
+
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
 
 .publisher-container {
   background-color: #adb8f2;
@@ -119,28 +121,13 @@ export default {
   margin-bottom: 30px;
 }
 
-.header h1 {
-  color: #3a3a3a;
-  margin-bottom: 5px;
-  font-weight: 600;
-}
-
-.header h2 {
-  color: #5f5f5f;
-  font-size: 1.1em;
-}
-
-.company-info {
-  background-color: #ffffff;
+.company-info,
+.active-trips {
+  background-color: #fff;
   border-radius: 12px;
   padding: 20px;
   margin-bottom: 20px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-}
-
-.company-info h3 {
-  margin-top: 0;
-  color: #354259;
 }
 
 .company-details {
@@ -148,19 +135,6 @@ export default {
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: 10px;
   margin-top: 10px;
-}
-
-.active-trips {
-  background-color: #ffffff;
-  border-radius: 12px;
-  padding: 20px;
-  margin-bottom: 20px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-}
-
-.active-trips h3 {
-  margin-top: 0;
-  color: #354259;
 }
 
 table {
@@ -171,46 +145,48 @@ table {
 th, td {
   padding: 12px 15px;
   text-align: left;
-  border-bottom: 1px solid #0d0c0c;
-}
-
-th {
-  background-color: #f2f6fb;
-  font-weight: 600;
-  color: #2f3b52;
+  border-bottom: 1px solid #ccc;
 }
 
 tr:hover {
-  background-color: #8e9299;
+  background-color: #f5f5f5;
 }
 
-.action-btn {
+.actions-cell {
+  display: flex;
+  gap: 10px;
+}
+
+.icon-btn {
   background: none;
   border: none;
   cursor: pointer;
   font-size: 1.2em;
-  margin: 0 5px;
-  color: #4a4a4a;
+  color: #444;
+  display: flex;
+  align-items: center;
 }
 
 .actions {
   display: flex;
   justify-content: space-between;
-  margin-top: 20px;
   flex-wrap: wrap;
   gap: 10px;
+}
+
+.primary-btn,
+.secondary-btn {
+  border: none;
+  padding: 10px 22px;
+  border-radius: 8px;
+  font-size: 1em;
+  font-weight: 500;
+  cursor: pointer;
 }
 
 .primary-btn {
   background-color: #555;
   color: white;
-  border: none;
-  padding: 10px 22px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 1em;
-  font-weight: 500;
-  transition: background-color 0.3s ease;
 }
 
 .primary-btn:hover {
@@ -220,13 +196,6 @@ tr:hover {
 .secondary-btn {
   background-color: #f86c6c;
   color: white;
-  border: none;
-  padding: 10px 22px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 1em;
-  font-weight: 500;
-  transition: background-color 0.3s ease;
 }
 
 .secondary-btn:hover {
@@ -238,14 +207,14 @@ tr:hover {
     grid-template-columns: 1fr;
   }
 
-  table {
-    display: block;
-    overflow-x: auto;
-  }
-
   .actions {
     flex-direction: column;
     align-items: stretch;
+  }
+
+  table {
+    overflow-x: auto;
+    display: block;
   }
 }
 </style>
