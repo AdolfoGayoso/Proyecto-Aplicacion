@@ -19,8 +19,6 @@
 
       <button class="login-btn" @click="iniciarSesion">Ingresar</button>
 
-      <a href="#" class="forgot">¿Olvidó su contraseña?</a>
-
       <hr />
       <p>o</p>
       <router-link to="/registro" class="register-link">Regístrese aquí</router-link>
@@ -42,7 +40,6 @@ export default {
   created() {
     const token = localStorage.getItem('token');
     if (token) {
-      // Ya existe un token: redirige al perfil
       this.$router.push('/perfil');
     }
   },
@@ -165,19 +162,6 @@ input:-webkit-autofill {
   font-weight: 600;
   font-size: 1rem;
   transition: background-color 0.3s;
-}
-
-
-.forgot {
-  display: block;
-  margin: 10px 0;
-  font-size: 0.85rem;
-  color: black;
-  text-decoration: none;
-}
-
-.forgot:hover {
-  text-decoration: underline;
 }
 
 hr {
