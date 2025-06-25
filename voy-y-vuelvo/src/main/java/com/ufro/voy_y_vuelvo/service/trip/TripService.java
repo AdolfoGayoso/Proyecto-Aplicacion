@@ -103,6 +103,37 @@ public class TripService {
         return new ApiResponse<>(HttpStatus.CREATED.value(), "Viaje creado con éxito.", trip);
     }
 
+    public ApiResponse<String> deleteTrip(String token, Long tripId) {
+
+        boolean isValid = userService.isUserAuthenticatedAndValidRole(token, Publisher.class);
+
+        if (!isValid) {
+            return new ApiResponse<>(HttpStatus.FORBIDDEN.value(), "Acceso denegado: El usuario no tiene el rol necesario o el token es inválido.", null);
+        }
+
+        Publisher publisher = (Publisher) userService.findById(jwtUtils.getUserIdFromToken(token));
+
+        // Verificar que el viaje existe y que pertenece al Publisher
+        Trip trip = tripRepository.findById(tripId).orElse(null);
+
+        if (trip == null) {
+            return new ApiResponse<>(HttpStatus.NOT_FOUND.value(), "Viaje no encontrado.", null);
+        }
+
+        // Verificar que el Publisher es el propietario del viaje
+        if (!trip.getPublisher().equals(publisher)) {
+            return new ApiResponse<>(HttpStatus.FORBIDDEN.value(), "No tienes permiso para eliminar este viaje.", null);
+        }
+
+        trip.setActive(false);
+        // Eliminar el viaje (y sus relaciones en cascada si es necesario)
+        tripRepository.save(trip);
+
+        return new ApiResponse<>(HttpStatus.OK.value(), "Viaje eliminado con éxito.", "El viaje ha sido eliminado correctamente.");
+    }
+
+
+
     private static Trip getTrip(CreateTripDto tripRequest, Publisher publisher, List<TripStopOrder> tripStopOrders) {
         Trip trip = new Trip();
         trip.setActive(true);
