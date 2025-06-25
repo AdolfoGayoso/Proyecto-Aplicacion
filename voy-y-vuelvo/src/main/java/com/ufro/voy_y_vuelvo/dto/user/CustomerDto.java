@@ -9,4 +9,5 @@ public class CustomerDto {
     private String userType;
     private String email;
     private String userName;
+    private String rut;
 }
