@@ -21,8 +21,9 @@ const routes = [
   { path: '/compra', component: CompraView },
   { path: '/crear-ticket/:id', component: () => import('../components/CrearTicket.vue') },
 
-  // ✅ Nueva vista de tickets del usuario
+
   { path: '/mis-tickets', component: () => import('../components/MisTickets.vue') }
+  
 ]
 
 const router = createRouter({
