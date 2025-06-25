@@ -21,10 +21,23 @@ public class PurchaseController {
     private final PurchasePdfService purchasePdfService;
 
     @PostMapping("/buy")
-    public ApiResponse<PurchaseResponseDto> purchaseTicket(@RequestHeader(value = "Authorization", required = false) String token,
-                                                           @RequestBody PurchaseRequestDto request) throws IOException {
-        return purchaseService.purchaseTicket(token, request.getTripId(), request.getStopIdFrom(),
-                request.getStopIdTo(), request.getRut(), request.getEmail());
+    public ApiResponse<PurchaseResponseDto> purchaseTicket(
+            @RequestHeader(value = "Authorization", required = false) String token,
+            @RequestBody PurchaseRequestDto request) throws IOException {
+
+        // ✅ Limpieza del token si viene con "Bearer "
+        if (token != null && token.startsWith("Bearer ")) {
+            token = token.substring(7);
+        }
+
+        return purchaseService.purchaseTicket(
+                token,
+                request.getTripId(),
+                request.getStopIdFrom(),
+                request.getStopIdTo(),
+                request.getRut(),
+                request.getEmail()
+        );
     }
 
     @GetMapping("/send-pdf")
