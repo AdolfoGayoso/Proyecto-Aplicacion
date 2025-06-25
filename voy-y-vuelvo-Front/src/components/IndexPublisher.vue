@@ -37,8 +37,8 @@
             <td>${{ trip.price }}</td>
             <td>{{ trip.availableSeats }}</td>
             <td>
-              <button @click="deleteTrip(trip.id)" class="action-btn material-icons">delete</button>
-              <button @click="verTickets(trip.id)" class="action-btn material-icons">confirmation_number</button>
+              <button @click="eliminarViaje(trip.id)" class="action-btn material-icons" style="color: #e74c3c">delete</button>
+              <button @click="verTickets(trip.id)" class="action-btn material-icons" style="color: #3498db">confirmation_number</button>
             </td>
           </tr>
         </tbody>
@@ -69,10 +69,18 @@
         <form @submit.prevent="crearViaje">
           <input v-model="nuevoViaje.plateNumber" placeholder="Patente" required />
           <input v-model.number="nuevoViaje.price" placeholder="Precio" type="number" required />
-          <input v-model="nuevoViaje.departureDate" placeholder="Fecha (YYYY-MM-DD)" required />
-          <input v-model="nuevoViaje.departureTime" placeholder="Hora (HH:MM)" required />
+          <input v-model="nuevoViaje.departureDate" type="date" required />
+          <input v-model="nuevoViaje.departureTime" type="time" required />
           <input v-model.number="nuevoViaje.numTotalSeats" placeholder="Asientos" type="number" required />
           <input v-model="nuevoViaje.stopsIds" placeholder="IDs de paradas (ej: 1,2,3)" required />
+          <button type="button" @click="mostrarParadas = !mostrarParadas" class="secondary-btn">Ver paradas disponibles</button>
+          <div v-if="mostrarParadas" class="stop-list-scrollable">
+            <ul>
+              <li v-for="parada in paradasDisponibles" :key="parada.id">
+                {{ parada.id }} - {{ parada.name }}
+              </li>
+            </ul>
+          </div>
           <button type="submit" class="primary-btn">Crear</button>
           <button type="button" @click="cerrarFormulario" class="secondary-btn">Cancelar</button>
         </form>
@@ -96,6 +104,9 @@ export default {
       mostrarRecorrido: false,
       recorridoSeleccionado: [],
       mostrarFormulario: false,
+      mostrarParadas: false,
+      paradasDisponibles: [...Array(32)].map((_, i) => ({ id: i + 1, name: [
+        'Angol','Carahue','Cholchol','Collipulli','Cunco','Curacautín','Curarrehue','Ercilla','Freire','Galvarino','Gorbea','Lautaro','Loncoche','Lonquimay','Los Sauces','Lumaco','Melipeuco','Nueva Imperial','Padre Las Casas','Perquenco','Pitrufquén','Pucón','Puerto Saavedra','Purén','Renaico','Teodoro Schmidt','Temuco','Toltén','Traiguén','Victoria','Vilcún','Villarrica'][i] })),
       nuevoViaje: {
         plateNumber: '',
         price: null,
@@ -112,9 +123,8 @@ export default {
   methods: {
     formatDate(dateString) {
       const date = new Date(dateString);
-      date.setDate(date.getDate() + 1); // Ajuste por desfase de zona horaria
-      const options = { year: 'numeric', month: 'long', day: 'numeric' }
-      return date.toLocaleDateString('es-CL', options)
+      date.setDate(date.getDate() + 1);
+      return date.toLocaleDateString('es-CL', { year: 'numeric', month: 'long', day: 'numeric' });
     },
     async obtenerDatosEmpresa() {
       const token = localStorage.getItem('token');
@@ -125,18 +135,20 @@ export default {
         const data = await response.json();
         this.company = data.data;
         if (this.company.publishedTrips) {
-          this.activeTrips = this.company.publishedTrips.map(trip => {
-            const availableSeats = trip.stops.reduce((acc, s) => acc + (s.availableSeats || 0), 0) / trip.stops.length;
-            return {
-              id: trip.id,
-              origin: trip.stops[0]?.stop?.name || 'Origen',
-              destination: trip.stops[trip.stops.length - 1]?.stop?.name || 'Destino',
-              departureDate: trip.departureDate,
-              price: trip.price,
-              availableSeats: Math.floor(availableSeats),
-              stops: trip.stops
-            };
-          });
+          this.activeTrips = this.company.publishedTrips
+            .filter(trip => trip.active)
+            .map(trip => {
+              const availableSeats = trip.stops.reduce((acc, s) => acc + (s.availableSeats || 0), 0) / trip.stops.length;
+              return {
+                id: trip.id,
+                origin: trip.stops[0]?.stop?.name || 'Origen',
+                destination: trip.stops[trip.stops.length - 1]?.stop?.name || 'Destino',
+                departureDate: trip.departureDate,
+                price: trip.price,
+                availableSeats: Math.floor(availableSeats),
+                stops: trip.stops
+              };
+            });
         }
       } catch (error) {
         console.error('Error al obtener datos de empresa o viajes:', error);
@@ -163,9 +175,14 @@ export default {
     },
     async crearViaje() {
       const token = localStorage.getItem('token');
+      const ids = this.nuevoViaje.stopsIds.split(',').map(id => parseInt(id.trim())).filter(Boolean);
+      if (ids.length < 2) {
+        alert('Debe ingresar al menos dos paradas.');
+        return;
+      }
       const payload = {
         ...this.nuevoViaje,
-        stopsIds: this.nuevoViaje.stopsIds.split(',').map(id => parseInt(id.trim()))
+        stopsIds: ids
       };
       try {
         const response = await fetch('http://localhost:8080/api/trip/create', {
@@ -181,14 +198,32 @@ export default {
           this.cerrarFormulario();
           await this.obtenerDatosEmpresa();
         } else {
-          alert(data.message);
+          alert(data.message || 'Error al crear viaje.');
         }
       } catch (error) {
         console.error('Error al crear viaje:', error);
+        alert('Error al conectar con el servidor.');
       }
     },
-    deleteTrip(id) {
-      console.log('Eliminar viaje:', id)
+    async eliminarViaje(id) {
+      const token = localStorage.getItem('token');
+      try {
+        const response = await fetch(`http://localhost:8080/api/trip/delete-trip-by-id-${id}`, {
+          method: 'PUT',
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        const data = await response.json();
+        if (response.ok) {
+          await this.obtenerDatosEmpresa();
+        } else {
+          alert(data.message || 'Error al eliminar viaje.');
+        }
+      } catch (error) {
+        console.error('Error al eliminar viaje:', error);
+        alert('Error al conectar con el servidor.');
+      }
     },
     verTickets(tripId) {
       this.$router.push({ path: '/tickets-publisher', query: { tripId } })
@@ -324,6 +359,16 @@ tr:hover {
   padding: 8px;
   margin-bottom: 10px;
   border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.stop-list-scrollable {
+  max-height: 200px;
+  overflow-y: auto;
+  margin-top: 10px;
+  border: 1px solid #ccc;
+  padding: 10px;
+  background: #f9f9f9;
   border-radius: 6px;
 }
 
