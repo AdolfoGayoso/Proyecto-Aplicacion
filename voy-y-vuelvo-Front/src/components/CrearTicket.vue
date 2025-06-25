@@ -1,20 +1,23 @@
 <template>
   <div class="crear-ticket-container">
-    <router-link to="/perfil" class="volver-link">← Volver al perfil</router-link>
+    <router-link to="/" class="logo-link">
+      <img src="@/assets/logo.png" alt="Logo del Proyecto" class="corner-logo" />
+    </router-link>
 
-    <h2>Crear Ticket para el viaje</h2>
+    <div class="ticket-form">
+      <h2>Crear Ticket de Soporte</h2>
 
-    <div class="detalle-viaje" v-if="viaje">
-      <p><strong>Origen - Destino:</strong> {{ viaje.origen }} - {{ viaje.destino }}</p>
-      <p><strong>Fecha:</strong> {{ viaje.fecha }}</p>
-      <p><strong>Empresa:</strong> {{ viaje.empresa }}</p>
-    </div>
+      <div class="form-group">
+        <label for="titulo">Título</label>
+        <input type="text" id="titulo" v-model="title" disabled />
+      </div>
 
-    <div class="formulario">
-      <label for="descripcion">Motivo de la queja:</label>
-      <textarea id="descripcion" v-model="descripcion" rows="5" placeholder="Escribe aquí tu queja..."></textarea>
+      <div class="form-group">
+        <label for="descripcion">Descripción</label>
+        <textarea id="descripcion" v-model="descripcion" rows="6" placeholder="Describe el problema con tu viaje..."></textarea>
+      </div>
 
-      <button @click="enviarTicket">Enviar Ticket</button>
+      <button class="enviar-btn" @click="enviarTicket">Enviar Ticket</button>
     </div>
   </div>
 </template>
@@ -24,35 +27,14 @@ export default {
   name: 'CrearTicket',
   data() {
     return {
+      title: 'Reclamo de viaje',
       descripcion: '',
-      viaje: null,
+      viaje: {
+        purchaseUuid: this.$route.params.id
+      }
     };
   },
-  mounted() {
-    const id = this.$route.params.id;
-    this.obtenerViaje(id);
-  },
   methods: {
-    async obtenerViaje(id) {
-      try {
-        const response = await fetch(`http://localhost:8080/api/trip/get-trip-by-id-${id}`);
-        const result = await response.json();
-        if (!response.ok) throw new Error(result.message || 'Error al obtener el viaje');
-
-        const trip = result.data;
-
-        this.viaje = {
-          id: trip.id,
-          origen: trip.stopOrders[0]?.stop.name || 'Origen desconocido',
-          destino: trip.stopOrders.at(-1)?.stop.name || 'Destino desconocido',
-          fecha: trip.departureDate,
-          empresa: trip.publisherName || 'Empresa desconocida'
-        };
-      } catch (error) {
-        alert('Error al cargar información del viaje: ' + error.message);
-      }
-    },
-
     async enviarTicket() {
       if (!this.descripcion.trim()) {
         alert('Por favor ingresa una descripción del problema.');
@@ -61,13 +43,13 @@ export default {
 
       const token = localStorage.getItem('token');
       if (!token) {
-        alert('Usuario no autenticado. Inicia sesión nuevamente.');
-        this.$router.push('/login');
+        alert('Debes iniciar sesión para enviar un ticket.');
         return;
       }
 
-      const ticketPayload = {
-        tripId: this.viaje.id,
+      const ticket = {
+        purchaseUuid: this.viaje.purchaseUuid,
+        title: this.title,
         description: this.descripcion
       };
 
@@ -78,13 +60,12 @@ export default {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`
           },
-          body: JSON.stringify(ticketPayload)
+          body: JSON.stringify(ticket)
         });
 
         const result = await response.json();
-
         if (!response.ok) {
-          throw new Error(result.message || 'No se pudo crear el ticket');
+          throw new Error(result.message || 'Error al enviar el ticket');
         }
 
         alert('Ticket enviado correctamente');
@@ -97,61 +78,38 @@ export default {
 };
 </script>
 
-
 <style scoped>
 .crear-ticket-container {
-  background-color: #e8eaf6;
-  padding: 30px;
-  font-family: 'Segoe UI', sans-serif;
-  min-height: 100vh;
+  padding: 2rem;
+  max-width: 600px;
+  margin: 0 auto;
 }
 
-.volver-link {
-  text-decoration: none;
-  color: #3f51b5;
-  font-weight: bold;
-  margin-bottom: 20px;
-  display: inline-block;
-}
-
-h2 {
-  color: #3f51b5;
-  margin-bottom: 20px;
-}
-
-.detalle-viaje {
-  background-color: #c5cae9;
-  padding: 15px;
+.ticket-form {
+  background: #f4f4f4;
+  padding: 2rem;
   border-radius: 10px;
-  margin-bottom: 20px;
+  box-shadow: 0 0 10px #ccc;
 }
 
-.formulario {
-  background-color: white;
-  padding: 20px;
-  border-radius: 10px;
+.form-group {
+  margin-bottom: 1.5rem;
 }
 
-textarea {
+textarea,
+input {
   width: 100%;
-  padding: 10px;
+  padding: 0.75rem;
   border-radius: 6px;
   border: 1px solid #ccc;
-  resize: vertical;
-  margin-bottom: 15px;
 }
 
-button {
-  background-color: #7986cb;
-  color: white;
-  padding: 10px 20px;
-  border-radius: 10px;
-  border: none;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-button:hover {
+.enviar-btn {
   background-color: #5c6bc0;
+  color: white;
+  border: none;
+  padding: 0.75rem 2rem;
+  border-radius: 6px;
+  cursor: pointer;
 }
 </style>

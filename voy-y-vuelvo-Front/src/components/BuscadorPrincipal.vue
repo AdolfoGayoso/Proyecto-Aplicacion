@@ -18,8 +18,7 @@
             @focus="filtrarSugerencias('origin')"
           />
         </div>
-        <!-- Lista de sugerencias -->
-        <ul v-if="showOriginSuggestions && filteredStops.length && origin.length > 0" class="suggestions-list" >
+        <ul v-if="showOriginSuggestions && filteredStops.length && origin.length > 0" class="suggestions-list">
           <li v-for="stop in filteredStops" :key="stop.id" @click="seleccionarSugerencia(stop.name, 'origin')">
             {{ stop.name }}
           </li>
@@ -39,16 +38,8 @@
             @focus="filtrarSugerencias('destination')"
           />
         </div>
-        <!-- Lista de sugerencias para DESTINO -->
-        <ul
-          v-if="showDestinationSuggestions && filteredStops.length && destination.length > 0"
-          class="suggestions-list"
-        >
-          <li
-            v-for="stop in filteredStops"
-            :key="stop.id"
-            @click="seleccionarSugerencia(stop.name, 'destination')"
-          >
+        <ul v-if="showDestinationSuggestions && filteredStops.length && destination.length > 0" class="suggestions-list">
+          <li v-for="stop in filteredStops" :key="stop.id" @click="seleccionarSugerencia(stop.name, 'destination')">
             {{ stop.name }}
           </li>
         </ul>
@@ -78,11 +69,11 @@
 
     <!-- Botones abajo -->
     <div class="bottom-icons">
-      <button @click="$router.push('/login')">
+      <button @click="irAlPerfil">
         <span class="material-icons">account_circle</span>
       </button>
-      <button>
-        <span class="material-icons">help_outline</span>
+      <button @click="irAMisTickets">
+        <span class="material-icons">confirmation_number</span>
       </button>
     </div>
   </div>
@@ -172,7 +163,7 @@ export default {
           }
         }
 
-        // Si todo OK → redirigir a resultados
+        // Redirigir a resultados si todo salió bien
         this.$router.push({
           path: '/resultados',
           query: {
@@ -187,10 +178,27 @@ export default {
         console.error('Error en la petición:', error)
         alert('Ocurrió un error al buscar viajes: ' + error.message)
       }
+    },
+    irAMisTickets() {
+      const token = localStorage.getItem('token')
+      if (token) {
+        this.$router.push('/mis-tickets')
+      } else {
+        this.$router.push('/login')
+      }
+    },
+    irAlPerfil() {
+      const token = localStorage.getItem('token')
+      if (token) {
+        this.$router.push('/perfil')
+      } else {
+        this.$router.push('/login')
+      }
     }
   }
 }
 </script>
+
 
 <style scoped>
 .container {

@@ -18,35 +18,39 @@
 
       <div class="resumen">
         <h3>Resumen</h3>
-        <p>N viajes realizados</p>
+        <p>{{ viajes.length }} viajes realizados</p>
         <p>N Tickets realizados</p>
-        <button class="tickets-btn">Mis tickets</button>
+        <button class="tickets-btn" @click="irAMisTickets">Mis tickets</button>
       </div>
     </div>
 
     <div class="historial">
-  <h3>Historial de viajes</h3>
-  <div class="tabla">
-    <div class="fila titulo">
-      <span>Origen - Destino</span>
-      <span>Fecha</span>
-      <span>Empresa</span>
-      <span>Precio</span>
-      <span>Tickets</span>
-    </div>
+      <h3>Historial de viajes</h3>
+      <div class="tabla">
+        <div class="fila titulo">
+          <span>Origen - Destino</span>
+          <span>Fecha</span>
+          <span>Empresa</span>
+          <span>Precio</span>
+          <span>Tickets</span>
+        </div>
 
-    <div class="fila" v-for="n in 5" :key="n">
-      <span>Origen - Destino</span>
-      <span>Fecha</span>
-      <span>Empresa</span>
-      <span>Precio</span>
-      <router-link :to="`/crear-ticket/${n}`" class="crear-ticket-btn">
-        Crear Ticket
-      </router-link>
+        <div v-if="viajes.length > 0">
+          <div class="fila" v-for="(viaje, index) in viajes" :key="index">
+            <span>{{ viaje.origen }} - {{ viaje.destino }}</span>
+            <span>{{ viaje.fecha }}</span>
+            <span>{{ viaje.empresa }}</span>
+            <span>{{ viaje.precio }}</span>
+            <router-link :to="`/crear-ticket/${viaje.purchaseUuid}`" class="crear-ticket-btn">
+              Crear Ticket
+            </router-link>
+          </div>
+        </div>
+        <div v-else>
+          <p style="text-align: center; padding: 20px; font-weight: 500;">Aún no has realizado compras.</p>
+        </div>
+      </div>
     </div>
-  </div>
-</div>
-
   </div>
 </template>
 
@@ -65,11 +69,13 @@ export default {
   name: 'PerfilUsuario',
   data() {
     return {
-      user: null
+      user: null,
+      viajes: []
     };
   },
   created() {
     this.obtenerDatosUsuario();
+    this.obtenerHistorialViajes();
   },
   methods: {
     async obtenerDatosUsuario() {
@@ -89,13 +95,10 @@ export default {
           }
         });
 
-        if (!response.ok) {
-          throw new Error('Error al obtener los datos del usuario');
-        }
+        if (!response.ok) throw new Error('Error al obtener los datos del usuario');
 
         const data = await response.json();
         this.user = data.data;
-        console.log('Datos del usuario:', this.user);
       } catch (error) {
         console.error('Error al obtener los datos del usuario:', error);
         alert('No se pudo obtener la información del usuario.');
@@ -103,13 +106,48 @@ export default {
         this.$router.push('/login');
       }
     },
+
+    async obtenerHistorialViajes() {
+      const token = localStorage.getItem('token');
+      if (!token || tokenExpirado(token)) return;
+
+      try {
+        const response = await fetch('http://localhost:8080/api/purchase/history', {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+
+        if (!response.ok) {
+          console.warn('No se pudo obtener historial de viajes');
+          return;
+        }
+
+        const data = await response.json();
+        this.viajes = data.data || [];
+      } catch (error) {
+        console.error('Error al cargar historial de viajes:', error);
+      }
+    },
+
     cerrarSesion() {
       localStorage.removeItem('token');
       this.$router.push('/login');
+    },
+
+    irAMisTickets() {
+      const token = localStorage.getItem('token');
+      if (token && !tokenExpirado(token)) {
+        this.$router.push('/mis-tickets');
+      } else {
+        alert('Por favor, inicie sesión.');
+        this.$router.push('/login');
+      }
     }
   }
 }
 </script>
+
 
 <style scoped>
 .perfil-container {
